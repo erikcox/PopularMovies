@@ -2,7 +2,6 @@ package rocks.ecox.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,6 @@ public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> 
     public void onBindViewHolder(MoviePosterHolder moviePosterHolder, int position) {
         // Get the data model based on position
         Movie movie = mMovies.get(position);
-        Log.v("RecyclerView", position + ": " + movie.getTitle() + " " +movie.getPoster());
         Picasso.with(mContext)
                 .load(movie.getPoster())
                 .error(R.drawable.poster_placeholder)
