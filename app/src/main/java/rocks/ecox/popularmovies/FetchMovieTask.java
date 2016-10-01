@@ -23,7 +23,7 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
     private final String TAG = "API";
-    private String[] getMovieDataFromJson(String movieJsonStr)
+    private static void getMovieDataFromJson(String movieJsonStr)
             throws JSONException, ParseException {
         // Is there a way to request the number of movies by passing in int numMovies?
         final String TMDB_LIST = "results";
@@ -64,7 +64,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
             movie.setOverview(movieJson.getString(OVERVIEW));
             movie.save();
         }
-        return resultStrs; // TODO: remove this placeholder, it does nothing.
     }
 
     @Override
@@ -133,7 +132,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
         }
 
         try {
-            return getMovieDataFromJson(movieJsonStr);
+            getMovieDataFromJson(movieJsonStr);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
