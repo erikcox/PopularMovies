@@ -13,28 +13,33 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
     private final String TAG = "API";
-
     private String[] getMovieDataFromJson(String movieJsonStr)
-        throws JSONException{
+            throws JSONException, ParseException {
         // Is there a way to request the number of movies by passing in int numMovies?
         final String TMDB_LIST = "results";
         final String TITLE = "original_title";
         final String POSTER_PATH = "poster_path";
         final String OVERVIEW = "overview";
         final String RELEASE_DATE = "release_date";
+        final String RATING = "vote_average";
         final String DURATION = ""; // Haven't found this in JSON yet
         final String sizeList[] = {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
         final String POSTER_SIZE = sizeList[2];
         final String THUMBNAIL_SIZE = sizeList[0];
         final String POSTER_URL = "http://image.tmdb.org/t/p/" + POSTER_SIZE;
         final String THUMBNAIL_URL = "http://image.tmdb.org/t/p/" + THUMBNAIL_SIZE;
+        SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
         // TODO: Get duration and trailers. Do I need the movie id?
 
         JSONObject movieJSON = new JSONObject(movieJsonStr);
@@ -50,12 +55,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
             movie.setTitle(movieJson.getString(TITLE));
             movie.setPoster(POSTER_URL + movieJson.getString(POSTER_PATH));
             movie.setThumbnail(THUMBNAIL_URL + movieJson.getString(POSTER_PATH));
-            movie.setReleaseDate(movieJson.getString(POSTER_PATH));
-            movie.setUserRating(movieJson.getString(RELEASE_DATE));
+
+            if(movieJson.getString(RELEASE_DATE).length() > 0) {
+                movie.setReleaseDate(dFormat.parse(movieJson.getString(RELEASE_DATE)));
+            }
+
+            movie.setUserRating(movieJson.getString(RATING));
             movie.setOverview(movieJson.getString(OVERVIEW));
             movie.save();
-
-//            Log.d("DB", "" + movie.getTitle() + " " + movie.getUserRating()); // This line breaks it
         }
         return resultStrs; // TODO: remove this placeholder, it does nothing.
     }
@@ -63,7 +70,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
     @Override
     protected String[] doInBackground(String... params){
         final List<String> queryList = Arrays.asList("popular", "top_rated");
-
         if(!queryList.contains(params[0]) ) {
             Log.d(TAG, "doInBackground sortOrder parameter incorrect. " + params[0]);
             return null;
@@ -128,11 +134,9 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
         try {
             return getMovieDataFromJson(movieJsonStr);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
-
-        Log.d(TAG, "JSON: " + movieJsonStr);
         return null;
     }
 }

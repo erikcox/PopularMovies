@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "Movies")
@@ -16,7 +17,7 @@ public class Movie extends Model{
     @Column(name = "PosterThumbnail")
     private String mPosterThumbnail;
     @Column(name = "ReleaseDate")
-    private String mReleaseDate;
+    private Date mReleaseDate;
     @Column(name = "Rating")
     private String mUserRating;
     @Column(name = "Overview")
@@ -54,13 +55,11 @@ public class Movie extends Model{
         this.mPosterThumbnail = thumbnail;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return mReleaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.mReleaseDate = releaseDate;
-    }
+    public void setReleaseDate(Date releaseDate) { this.mReleaseDate = releaseDate; }
 
     public String getUserRating() {
         return mUserRating;
