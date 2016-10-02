@@ -12,10 +12,14 @@ import com.activeandroid.query.Select;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "Movies")
+@Table(name = "Movies", id = "id")
 public class Movie extends Model{
-    @Column(name = "Title", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "Movie_ID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    private long mId;
+    @Column(name = "Title")
     private String mTitle;
+    @Column(name = "PosterPath")
+    private String mPosterPath;
     @Column(name = "Poster")
     private String mPoster;
     @Column(name = "PosterThumbnail")
@@ -31,57 +35,42 @@ public class Movie extends Model{
         super();
     }
 
-    public Movie(String title, String poster) {
+    public Movie(long id, String title, String posterPath, String poster, String thumbnail,
+                 Date releaseDate, String rating, String overview) {
         super();
-        mTitle = title;
-        mPoster = poster;
+        this.mId = id;
+        this.mTitle = title;
+        this.mPosterPath = posterPath;
+        this.mPoster = poster;
+        this.mPosterThumbnail = thumbnail;
+        this.mReleaseDate = releaseDate;
+        this.mUserRating = rating;
+        this.mOverview = overview;
     }
 
     public String getTitle() {
         return mTitle;
     }
-
-    public void setTitle(String title) {
-        this.mTitle = title;
+    public String getPosterPath() {
+        return mPosterPath;
     }
-
     public String getPoster() {
         return mPoster;
     }
-
-    public void setPoster(String poster) { this.mPoster = poster; }
-
     public String getThumbnail() {
         return mPosterThumbnail;
     }
-
-    public void setThumbnail(String thumbnail) {
-        this.mPosterThumbnail = thumbnail;
-    }
-
     public Date getReleaseDate() {
         return mReleaseDate;
     }
-
-    public void setReleaseDate(Date releaseDate) { this.mReleaseDate = releaseDate; }
-
     public String getUserRating() {
         return mUserRating;
     }
-
-    public void setUserRating(String userRating) {
-        this.mUserRating = userRating;
-    }
-
     public String getOverview() {
         return mOverview;
     }
 
-    public void setOverview(String overview) {
-        this.mOverview = overview;
-    }
-
-    // Get all items
+    // Get all movies from DB
     public static List<Movie> getAll() {
         return new Select()
                 .from(Movie.class)

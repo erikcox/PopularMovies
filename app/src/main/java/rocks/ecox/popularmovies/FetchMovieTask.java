@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -55,22 +56,15 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
         JSONObject movieJSON = new JSONObject(movieJsonStr);
         JSONArray movieArray = movieJSON.getJSONArray(MOVIE_LIST);
 
+        ArrayList<Movie> movies = new ArrayList<>();
         for(int i = 0; i < movieArray.length(); i++) {
-            String title;
-
             JSONObject movieJson = movieArray.getJSONObject(i);
+            Movie movie = new Movie(Long.parseLong(movieJson.getString(MOVIE_ID)), movieJson.getString(TITLE),
+                    movieJson.getString(POSTER_PATH), (POSTER_URL + movieJson.getString(POSTER_PATH)),
+                    (THUMBNAIL_URL + movieJson.getString(POSTER_PATH)),
+                    dFormat.parse(movieJson.getString(RELEASE_DATE)), movieJson.getString(RATING),
+                    movieJson.getString(OVERVIEW));
 
-            Movie movie = new Movie();
-            movie.setTitle(movieJson.getString(TITLE));
-            movie.setPoster(POSTER_URL + movieJson.getString(POSTER_PATH));
-            movie.setThumbnail(THUMBNAIL_URL + movieJson.getString(POSTER_PATH));
-
-            if(movieJson.getString(RELEASE_DATE).length() > 0) {
-                movie.setReleaseDate(dFormat.parse(movieJson.getString(RELEASE_DATE)));
-            }
-
-            movie.setUserRating(movieJson.getString(RATING));
-            movie.setOverview(movieJson.getString(OVERVIEW));
             movie.save();
         }
     }
