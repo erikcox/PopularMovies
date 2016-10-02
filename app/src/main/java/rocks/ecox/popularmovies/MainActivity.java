@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies;
 
 import android.os.Bundle;
@@ -11,9 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Movie> movies;
-    private RecyclerView rvPosters;
-    private MoviePosterAdapter adapter;
+    private List<Movie> mMovies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +23,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
 
-        FetchMovieTask movieTask = new FetchMovieTask();
-        movieTask.execute("popular"); // popular or top_rated for now
-//        movieTask.execute("top_rated"); // top_rated isn't working, test url in browser
+        // Get data from the Movie DB API
+        FetchMovieTask mMovieTask = new FetchMovieTask();
+        mMovieTask.execute("popular"); // popular or top_rated for now
+//        mMovieTask.execute("top_rated"); // top_rated isn't working, test url in browser
         getItems();
 
         // Initialize recycler view
-        rvPosters = (RecyclerView) findViewById(R.id.rvPoster);
+        RecyclerView rvPosters = (RecyclerView) findViewById(R.id.rvPoster);
+
         rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
 
-        adapter = new MoviePosterAdapter(MainActivity.this, movies);
-        rvPosters.setAdapter(adapter);
+        MoviePosterAdapter mMovieAdapter = new MoviePosterAdapter(MainActivity.this, mMovies);
+        rvPosters.setAdapter(mMovieAdapter);
     }
 
     // Get items from DB
     private void getItems() {
-        movies = (ArrayList) Movie.getAll();
+        mMovies = (ArrayList) Movie.getAll();
     }
 
 }

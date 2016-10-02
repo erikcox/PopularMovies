@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies;
 
 import com.activeandroid.Model;

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies;
 
 import android.os.AsyncTask;
@@ -21,31 +25,36 @@ import java.util.Locale;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
+/**
+ * Creates an AsyncTask to grab movie data and writes it to a movie object.
+ */
+
 public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
-    private final String TAG = "API";
+    private final String TAG = FetchMovieTask.class.getSimpleName();
+
+    /** Turns Movie DB's JSON string into Movie objects and populates SQLite DB */
     private static void getMovieDataFromJson(String movieJsonStr)
             throws JSONException, ParseException {
-        // Is there a way to request the number of movies by passing in int numMovies?
-        final String TMDB_LIST = "results";
+        final String MOVIE_LIST = "results";
+        final String MOVIE_ID = "id";
+        // Spec says to use 'original_title'. Note that there is also a 'title' field.
         final String TITLE = "original_title";
         final String POSTER_PATH = "poster_path";
         final String OVERVIEW = "overview";
         final String RELEASE_DATE = "release_date";
         final String RATING = "vote_average";
-        final String DURATION = ""; // Haven't found this in JSON yet
+
         final String sizeList[] = {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
         final String POSTER_SIZE = sizeList[2];
         final String THUMBNAIL_SIZE = sizeList[0];
+
         final String POSTER_URL = "http://image.tmdb.org/t/p/" + POSTER_SIZE;
         final String THUMBNAIL_URL = "http://image.tmdb.org/t/p/" + THUMBNAIL_SIZE;
         SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-        // TODO: Get duration and trailers. Do I need the movie id?
-
         JSONObject movieJSON = new JSONObject(movieJsonStr);
-        JSONArray movieArray = movieJSON.getJSONArray(TMDB_LIST);
+        JSONArray movieArray = movieJSON.getJSONArray(MOVIE_LIST);
 
-        String[] resultStrs = new String[movieArray.length()];
         for(int i = 0; i < movieArray.length(); i++) {
             String title;
 
@@ -66,6 +75,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
         }
     }
 
+    /** Returns the JSON string of movie data. */
     @Override
     protected String[] doInBackground(String... params){
         final List<String> queryList = Arrays.asList("popular", "top_rated");
@@ -93,7 +103,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
             InputStream inputStream = urlConnection.getInputStream();
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
-                // Nothing to do.
                 Log.e(TAG, "Input Stream is empty");
                 return null;
             }
@@ -101,22 +110,16 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
                 buffer.append(line + "\n");
             }
 
             if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
                 Log.e(TAG, "Buffer length was zero");
                 return null;
             }
             movieJsonStr = buffer.toString();
         } catch (IOException e) {
             Log.e(TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attempting
-            // to parse it.
             return null;
         } finally{
             if (urlConnection != null) {
@@ -133,9 +136,10 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
         try {
             getMovieDataFromJson(movieJsonStr);
-        } catch (Exception e) {
+        } catch (JSONException | ParseException e) {
             Log.e(TAG, e.getMessage(), e);
         }
+
         return null;
     }
 }

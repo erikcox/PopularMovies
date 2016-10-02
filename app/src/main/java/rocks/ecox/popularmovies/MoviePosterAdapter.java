@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies;
 
 import android.content.Context;
@@ -5,13 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import static rocks.ecox.popularmovies.R.id.ivPoster;
 
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> {
     private List<Movie> mMovies;
