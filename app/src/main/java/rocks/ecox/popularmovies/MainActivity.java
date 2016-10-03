@@ -24,23 +24,30 @@ public class MainActivity extends AppCompatActivity {
         Stetho.initializeWithDefaults(this);
 
         // Get data from the Movie DB API
-        FetchMovieTask mMovieTask = new FetchMovieTask();
-        mMovieTask.execute("popular"); // popular or top_rated for now
-//        mMovieTask.execute("top_rated"); // top_rated isn't working, test url in browser
-        getItems();
+        // sortBy: popularity, vote_average, pageNum: 1, 2, 3...
+        getMoviesFromTMDB("vote_average", 1);
+        populateFromDb();
 
         // Initialize recycler view
-        RecyclerView rvPosters = (RecyclerView) findViewById(R.id.rvPoster);
-
-        rvPosters.setLayoutManager(new GridLayoutManager(this, 2));
+        final RecyclerView rvPosters = (RecyclerView) findViewById(R.id.rvPoster);
+        final GridLayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        rvPosters.setLayoutManager(mLayoutManager);
 
         MoviePosterAdapter mMovieAdapter = new MoviePosterAdapter(MainActivity.this, mMovies);
         rvPosters.setAdapter(mMovieAdapter);
+//        mMovieAdapter.notifyDataSetChanged();
+
     }
 
     // Get items from DB
-    private void getItems() {
-        mMovies = (ArrayList) Movie.getAll();
+    // TODO: rename this
+    private void populateFromDb() {
+        mMovies = (ArrayList<Movie>) Movie.getAll();
+    }
+
+    private void getMoviesFromTMDB(String sortedBy, int pageNum) {
+        FetchMovieTask fetchMovieTask = new FetchMovieTask();
+        fetchMovieTask.execute(sortedBy, String.valueOf(pageNum));
     }
 
 }

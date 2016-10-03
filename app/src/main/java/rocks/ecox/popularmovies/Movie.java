@@ -12,6 +12,10 @@ import com.activeandroid.query.Select;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Creates a movie object and puts it's data into SQLite.
+ */
+
 @Table(name = "Movies", id = "id")
 public class Movie extends Model{
     @Column(name = "Movie_ID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)

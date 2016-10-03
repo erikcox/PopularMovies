@@ -7,6 +7,10 @@ package rocks.ecox.popularmovies;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * Activity to display movie details once clicked on in MainActivity.
+ */
+
 public class MovieDetailActivity extends AppCompatActivity {
 
     @Override

@@ -14,6 +14,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+/**
+ * Custom adapter for the movie poster RecyclerView
+ */
+
 public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> {
     private List<Movie> mMovies;
     private Context mContext;

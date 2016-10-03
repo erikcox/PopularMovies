@@ -8,6 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+/**
+ * Custom ViewHolder for the movie poster in RecyclerView
+ */
+
 public class MoviePosterHolder extends RecyclerView.ViewHolder{
     protected ImageView ivPoster;
 

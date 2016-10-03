@@ -4,6 +4,7 @@
 
 package rocks.ecox.popularmovies;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,8 +21,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
@@ -30,8 +29,9 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
  * Creates an AsyncTask to grab movie data and writes it to a movie object.
  */
 
-public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
+public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private final String TAG = FetchMovieTask.class.getSimpleName();
+    private int pageNum = 1;
 
     /** Turns Movie DB's JSON string into Movie objects and populates SQLite DB */
     private static void getMovieDataFromJson(String movieJsonStr)
@@ -71,22 +71,35 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
     /** Returns the JSON string of movie data. */
     @Override
-    protected String[] doInBackground(String... params){
-        final List<String> queryList = Arrays.asList("popular", "top_rated");
-        if(!queryList.contains(params[0]) ) {
-            Log.d(TAG, "doInBackground sortOrder parameter incorrect. " + params[0]);
-            return null;
-        }
+    protected ArrayList<Movie> doInBackground(String... params){
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String movieJsonStr = null;
+        String api_key = TMDB_API_KEY;
 
         try {
-            final String BASE_URL = "http://api.themoviedb.org/3/";
-            final String QUERY_PARAM = "movie/" + queryList.get(0); // TODO: pass this in via params
-            final String API_KEY = "?api_key=" + TMDB_API_KEY;
-            URL url = new URL(BASE_URL.concat(QUERY_PARAM).concat(API_KEY));
+            final String BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
+            final String LANGUAGE = "language";
+            final String PAGE = "page";
+            final String SORT_PARAM = "sort_by";
+            final String VOTE_COUNT_THRESHOLD = "vote_count.gte";
+            final String API_KEY_PARAM = "api_key";
+
+            Uri.Builder uriBuilder = Uri.parse(BASE_URL).buildUpon()
+                    .appendQueryParameter(LANGUAGE, "en")
+                    .appendQueryParameter(PAGE, params[1])
+                    .appendQueryParameter(SORT_PARAM, params[0]+".desc")
+                    .appendQueryParameter(API_KEY_PARAM, api_key);
+
+            // If sorted by rating return 500
+            if (params[0].equals("vote_average")) {
+                uriBuilder.appendQueryParameter(VOTE_COUNT_THRESHOLD, "500");
+            }
+
+            Uri completeUri = uriBuilder.build();
+            URL url = new URL(completeUri.toString());
+            Log.d(TAG, "Getting url: " + completeUri.toString());
 
             // Create the request and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -100,6 +113,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
                 Log.e(TAG, "Input Stream is empty");
                 return null;
             }
+
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
@@ -111,7 +125,9 @@ public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
                 Log.e(TAG, "Buffer length was zero");
                 return null;
             }
+
             movieJsonStr = buffer.toString();
+
         } catch (IOException e) {
             Log.e(TAG, "Error ", e);
             return null;
