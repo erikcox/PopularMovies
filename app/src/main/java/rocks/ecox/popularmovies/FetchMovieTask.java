@@ -32,9 +32,10 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private final String TAG = FetchMovieTask.class.getSimpleName();
     private int pageNum = 1;
+    private static ArrayList<Movie> finalResult;
 
     /** Turns Movie DB's JSON string into Movie objects and populates SQLite DB */
-    private static void getMovieDataFromJson(String movieJsonStr)
+    private static ArrayList<Movie> getMovieDataFromJson(String movieJsonStr)
             throws JSONException, ParseException {
         final String MOVIE_LIST = "results";
         final String MOVIE_ID = "id";
@@ -66,7 +67,10 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
                     movieJson.getString(OVERVIEW));
 
             movie.save();
+            movies.add(movie);
         }
+        finalResult = movies;
+        return movies;
     }
 
     /** Returns the JSON string of movie data. */
@@ -145,11 +149,22 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         }
 
         try {
-            getMovieDataFromJson(movieJsonStr);
+            return getMovieDataFromJson(movieJsonStr);
         } catch (JSONException | ParseException e) {
             Log.e(TAG, e.getMessage(), e);
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Movie> result) {
+        super.onPostExecute(result);
+        finalResult = result;
+        Log.d("REYCLERVIEW", result.toString());
+    }
+
+    public ArrayList<Movie> getFinalResult() {
+        return finalResult;
     }
 }
