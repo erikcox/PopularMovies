@@ -4,6 +4,8 @@
 
 package rocks.ecox.popularmovies;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -28,9 +30,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MoviePrefs", MODE_PRIVATE);
+        Editor editor = pref.edit();
 
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        if(item.getTitle() == getResources().getString(R.string.action_sort_popular) && getSupportActionBar() != null) {
+            item.setTitle(getResources().getString(R.string.action_sort_rating));
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+            editor.putString("SortBy", "popular");
+        } else {
+            item.setTitle(getResources().getString(R.string.action_sort_popular));
+            if(getSupportActionBar() != null){
+                getSupportActionBar().setTitle(getResources().getString(R.string.app_name_rating));
+            }
+            editor.putString("SortBy", "top_rated");
+        }
+
+        editor.apply();
+        return super.onOptionsItemSelected(item);
 
     }
 
