@@ -60,10 +60,10 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         ArrayList<Movie> movies = new ArrayList<>();
         for(int i = 0; i < movieArray.length(); i++) {
             JSONObject movieJson = movieArray.getJSONObject(i);
-            Movie movie = new Movie(Long.parseLong(movieJson.getString(MOVIE_ID)), movieJson.getString(TITLE),
+            Movie movie = new Movie(movieJson.getString(MOVIE_ID), movieJson.getString(TITLE),
                     movieJson.getString(POSTER_PATH), (POSTER_URL + movieJson.getString(POSTER_PATH)),
-                    (THUMBNAIL_URL + movieJson.getString(POSTER_PATH)),
-                    dFormat.parse(movieJson.getString(RELEASE_DATE)), movieJson.getString(RATING),
+                    THUMBNAIL_URL + movieJson.getString(POSTER_PATH),
+                    movieJson.getString(RELEASE_DATE), movieJson.getString(RATING),
                     movieJson.getString(OVERVIEW));
 
             movie.save();

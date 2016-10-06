@@ -9,7 +9,6 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +18,7 @@ import java.util.List;
 @Table(name = "Movies", id = "id")
 public class Movie extends Model{
     @Column(name = "Movie_ID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    private long mId;
+    private String mId;
     @Column(name = "Title")
     private String mTitle;
     @Column(name = "PosterPath")
@@ -29,7 +28,7 @@ public class Movie extends Model{
     @Column(name = "PosterThumbnail")
     private String mPosterThumbnail;
     @Column(name = "ReleaseDate")
-    private Date mReleaseDate;
+    private String mReleaseDate;
     @Column(name = "Rating")
     private String mUserRating;
     @Column(name = "Overview")
@@ -39,8 +38,8 @@ public class Movie extends Model{
         super();
     }
 
-    public Movie(long id, String title, String posterPath, String poster, String thumbnail,
-                 Date releaseDate, String rating, String overview) {
+    Movie(String id, String title, String posterPath, String poster, String thumbnail,
+          String releaseDate, String rating, String overview) {
         super();
         this.mId = id;
         this.mTitle = title;
@@ -52,9 +51,10 @@ public class Movie extends Model{
         this.mOverview = overview;
     }
 
-    public String getTitle() {
-        return mTitle;
+    public String getMId() {
+        return mId;
     }
+    public String getTitle() { return mTitle; }
     public String getPosterPath() {
         return mPosterPath;
     }
@@ -64,7 +64,7 @@ public class Movie extends Model{
     public String getThumbnail() {
         return mPosterThumbnail;
     }
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return mReleaseDate;
     }
     public String getUserRating() {

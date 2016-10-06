@@ -4,11 +4,12 @@
 
 package rocks.ecox.popularmovies;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
@@ -18,39 +19,28 @@ import java.util.List;
  * Custom adapter for the movie poster RecyclerView
  */
 
-public class MoviePosterAdapter extends RecyclerView.Adapter<MoviePosterHolder> {
-    private List<Movie> mMovies;
-    private Context mContext;
+public class MoviePosterAdapter extends ArrayAdapter<Movie> {
+    private static final String LOG_TAG = MoviePosterAdapter.class.getSimpleName();
 
-    public MoviePosterAdapter(Context context, List<Movie> movies) {
-        this.mMovies = movies;
-        this.mContext = context;
+    public MoviePosterAdapter(Activity context, List<Movie> androidFlavors) {
+        super(context, 0, androidFlavors);
     }
 
     @Override
-    public MoviePosterHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_poster, null);
-        MoviePosterHolder mh = new MoviePosterHolder(view);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Movie movie = getItem(position);
 
-        return mh;
-    }
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_poster, parent, false);
+        }
 
-    // Set the view attributes based on the data
-    @Override
-    public void onBindViewHolder(MoviePosterHolder moviePosterHolder, int position) {
-        // Get the data model based on position
-        Movie movie = mMovies.get(position);
-        Picasso.with(mContext)
+        ImageView poster = (ImageView) convertView.findViewById(R.id.ivPoster);
+        Picasso.with(getContext())
                 .load(movie.getPoster())
                 .error(R.drawable.poster_placeholder)
                 .placeholder(R.drawable.poster_placeholder)
-                .into(moviePosterHolder.ivPoster);
-    }
+                .into(poster);
 
-    // Determine the number of items
-    @Override
-    public int getItemCount() {
-        return (null != mMovies ? mMovies.size() : 0);
+        return convertView;
     }
-
 }
