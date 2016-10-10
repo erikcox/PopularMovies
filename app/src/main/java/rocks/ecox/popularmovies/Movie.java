@@ -9,6 +9,8 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,24 +33,24 @@ public class Movie extends Model{
     private String mReleaseDate;
     @Column(name = "Rating")
     private String mUserRating;
-    @Column(name = "Overview")
-    private String mOverview;
+    @Column(name = "Synopsis")
+    private String mSynopsis;
 
     public Movie(){
         super();
     }
 
     Movie(String id, String title, String posterPath, String poster, String thumbnail,
-          String releaseDate, String rating, String overview) {
+          String releaseDate, String rating, String synopsis) {
         super();
         this.mId = id;
         this.mTitle = title;
         this.mPosterPath = posterPath;
         this.mPoster = poster;
         this.mPosterThumbnail = thumbnail;
-        this.mReleaseDate = releaseDate;
+        this.mReleaseDate = formatReleaseDate(releaseDate);
         this.mUserRating = rating;
-        this.mOverview = overview;
+        this.mSynopsis = synopsis;
     }
 
     public String getMId() {
@@ -64,14 +66,19 @@ public class Movie extends Model{
     public String getThumbnail() {
         return mPosterThumbnail;
     }
-    public String getReleaseDate() {
-        return mReleaseDate;
-    }
+    public String getReleaseDate() { return mReleaseDate; }
     public String getUserRating() {
         return mUserRating;
     }
-    public String getOverview() {
-        return mOverview;
+    public String getSynopsis() {
+        return mSynopsis;
+    }
+
+    private String formatReleaseDate(String releaseDate) {
+        long unixSeconds = Long.parseLong(releaseDate);
+        Date date = new Date(unixSeconds);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        return sdf.format(date);
     }
 
     // Get all movies from DB

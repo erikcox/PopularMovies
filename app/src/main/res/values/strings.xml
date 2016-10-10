@@ -5,4 +5,5 @@
     <string name="action_sort_popular">Sort by most popular</string>
     <string name="action_sort_rating">Sort by highest rated</string>
     <string name="description_movie_poster">Movie poster</string>
+    <string name="movie_title">Movie Title</string>
 </resources>

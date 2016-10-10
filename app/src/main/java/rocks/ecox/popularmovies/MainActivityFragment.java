@@ -5,17 +5,19 @@
 package rocks.ecox.popularmovies;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivityFragment extends Fragment {
-
-    private MoviePosterAdapter movieAdapter;
 
     Movie[] movies = {
             new Movie("694", "The Shining", "/9fgh3Ns1iRzlQNYuJyK0ARQZU7w.jpg", "http://image.tmdb.org/t/p/w185/9fgh3Ns1iRzlQNYuJyK0ARQZU7w.jpg", "http://image.tmdb.org/t/p/w92/9fgh3Ns1iRzlQNYuJyK0ARQZU7w.jpg", "327826800000", "7.85", "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks with"),
@@ -38,11 +40,26 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        movieAdapter = new MoviePosterAdapter(getActivity(), Arrays.asList(movies));
+        List<Movie> movieList = Arrays.asList(movies);
 
+        final MoviePosterAdapter movieAdapter = new MoviePosterAdapter(getActivity(), movieList);
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(movieAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Movie movie = movieAdapter.getItem(position);
+
+                String[] movieDetails = {movie.getTitle(), movie.getThumbnail(), movie.getReleaseDate(), movie.getUserRating(), movie.getSynopsis()};
+                ArrayList<String> movieDetailsLst = new ArrayList<String>(Arrays.asList(movieDetails));
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
+                        .putStringArrayListExtra(Intent.EXTRA_TEXT, movieDetailsLst);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
+
 }

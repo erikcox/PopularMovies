@@ -20,10 +20,8 @@ import java.util.List;
  */
 
 public class MoviePosterAdapter extends ArrayAdapter<Movie> {
-    private static final String LOG_TAG = MoviePosterAdapter.class.getSimpleName();
-
-    public MoviePosterAdapter(Activity context, List<Movie> androidFlavors) {
-        super(context, 0, androidFlavors);
+    public MoviePosterAdapter(Activity context, List<Movie> movieObject) {
+        super(context, 0, movieObject);
     }
 
     @Override
