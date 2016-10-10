@@ -9,6 +9,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public class Movie extends Model{
     }
 
     Movie(String id, String title, String posterPath, String poster, String thumbnail,
-          String releaseDate, String rating, String synopsis) {
+          String releaseDate, String rating, String synopsis) throws ParseException {
         super();
         this.mId = id;
         this.mTitle = title;
@@ -74,11 +75,15 @@ public class Movie extends Model{
         return mSynopsis;
     }
 
-    private String formatReleaseDate(String releaseDate) {
-        long unixSeconds = Long.parseLong(releaseDate);
-        Date date = new Date(unixSeconds);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        return sdf.format(date);
+    private String formatReleaseDate(String releaseDate) throws ParseException {
+        if(releaseDate != null && !releaseDate.equals("")) {
+            SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat outFormat = new SimpleDateFormat("MM-dd-yyyy");
+            Date d = inFormat.parse(releaseDate);
+            return outFormat.format(d);
+        } else {
+            return "Unknown";
+        }
     }
 
     // Get all movies from DB

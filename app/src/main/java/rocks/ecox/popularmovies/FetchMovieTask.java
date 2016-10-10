@@ -32,7 +32,16 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private final String TAG = FetchMovieTask.class.getSimpleName();
     private int pageNum = 1;
-    private static ArrayList<Movie> finalResult;
+
+    public interface AsyncResponse {
+        void processFinish(ArrayList<Movie> output);
+    }
+
+    public AsyncResponse delegate = null;
+
+    public FetchMovieTask(AsyncResponse delegate) {
+        this.delegate = delegate;
+    }
 
     /** Turns Movie DB's JSON string into Movie objects and populates SQLite DB */
     private static ArrayList<Movie> getMovieDataFromJson(String movieJsonStr)
@@ -65,11 +74,8 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
                     THUMBNAIL_URL + movieJson.getString(POSTER_PATH),
                     movieJson.getString(RELEASE_DATE), movieJson.getString(RATING),
                     movieJson.getString(OVERVIEW));
-
-            movie.save();
             movies.add(movie);
         }
-        finalResult = movies;
         return movies;
     }
 
@@ -159,12 +165,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     @Override
     protected void onPostExecute(ArrayList<Movie> result) {
-        super.onPostExecute(result);
-        finalResult = result;
-        Log.d("REYCLERVIEW", result.toString());
+        delegate.processFinish(result);
     }
 
-    public ArrayList<Movie> getFinalResult() {
-        return finalResult;
-    }
 }
