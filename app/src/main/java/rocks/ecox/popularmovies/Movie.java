@@ -66,7 +66,7 @@ public class Movie {
             SimpleDateFormat outFormat = new SimpleDateFormat("MM-dd-yyyy");
             Date d = inFormat.parse(releaseDate);
             return outFormat.format(d);
-        } else {i
+        } else {
             return "Unknown";
         }
     }
