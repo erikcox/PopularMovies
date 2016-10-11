@@ -48,8 +48,8 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             throws JSONException, ParseException {
         final String MOVIE_LIST = "results";
         final String MOVIE_ID = "id";
-        // Spec says to use 'original_title'. Note that there is also a 'title' field.
-        final String TITLE = "original_title";
+        // Spec says to use 'original_title'. Using 'title' instead for English titles.
+        final String TITLE = "title";
         final String POSTER_PATH = "poster_path";
         final String OVERVIEW = "overview";
         final String RELEASE_DATE = "release_date";

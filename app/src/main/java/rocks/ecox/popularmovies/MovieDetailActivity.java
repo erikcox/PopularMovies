@@ -28,6 +28,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         Intent intent = this.getIntent();
+        getSupportActionBar().setTitle(R.string.title_movie_details);
 
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             ArrayList<String> movieDetailLst = intent.getStringArrayListExtra(Intent.EXTRA_TEXT);
