@@ -19,34 +19,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Fragment in MainActivity that contains the movie posters
+ */
 public class MainActivityFragment extends Fragment implements FetchMovieTask.AsyncResponse {
-    static List<Movie> movieList = new ArrayList<Movie>();
-    static MoviePosterAdapter movieAdapter;
+    static List<Movie> mMovieList = new ArrayList<Movie>();
+    static MoviePosterAdapter mMovieAdapter;
 
+    /** Check to see if we have saved data */
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            /** See if we have a network connection */
             if(Utility.isOnline(getActivity())) {
                 fetchMovies(Utility.getSortKey(getActivity()), "1");
             } else {
                 Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            movieAdapter.clear();
+            mMovieAdapter.clear();
             ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");
-            movieAdapter.addAll(savedMovies);
+            mMovieAdapter.addAll(savedMovies);
         }
     }
 
     public MainActivityFragment() {
     }
 
+    /** Save the movies in the view on exit or changing views */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        /** Make an ArrayList of the Movie objects in the mMovieAdapter */
         ArrayList<Movie> arrayList = new ArrayList<>();
-        for(int i=0;i < movieAdapter.getCount(); i++){
-            arrayList.add(movieAdapter.getItem(i));
+        for(int i = 0; i < mMovieAdapter.getCount(); i++){
+            arrayList.add(mMovieAdapter.getItem(i));
         }
 
         outState.putParcelableArrayList("movies", arrayList);
@@ -59,15 +66,18 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        movieAdapter = new MoviePosterAdapter(getActivity(), movieList);
+        mMovieAdapter = new MoviePosterAdapter(getActivity(), mMovieList);
         GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
-        gridView.setAdapter(movieAdapter);
+        gridView.setAdapter(mMovieAdapter);
+
+        /** Sets listener so that we can call the DetailActivity */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Movie movie = movieAdapter.getItem(position);
+                Movie movie = mMovieAdapter.getItem(position);
 
+                /** Create an array of movie details to pass to the DetailActivity */
                 String[] movieDetails = {movie.getTitle(), movie.getThumbnail(), movie.getReleaseDate(), movie.getUserRating(), movie.getSynopsis()};
                 ArrayList<String> movieDetailsLst = new ArrayList<String>(Arrays.asList(movieDetails));
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
@@ -79,18 +89,21 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
         return rootView;
     }
 
+    /** Update the adapter when the AsyncTask is complete */
     @Override
     public void processFinish(ArrayList<Movie> output) {
-        movieList = output;
-        movieAdapter.clear();
-        movieAdapter.addAll(movieList);
-        movieAdapter.notifyDataSetChanged();
+        mMovieList = output;
+        mMovieAdapter.clear();
+        mMovieAdapter.addAll(mMovieList);
+        mMovieAdapter.notifyDataSetChanged();
     }
 
+    /** Create a new AsyncTask to get Movie objects from TMDB api */
     public void fetchMovies(String sortBy, String page) {
         new FetchMovieTask((FetchMovieTask.AsyncResponse) this).execute(sortBy, page);
     }
 
+    /** Update adapter with new Movie objects when new sort order is chosen in the menu */
     public boolean onOptionsItemSelected(MenuItem item) {
         if(Utility.isOnline(getActivity())) {
             fetchMovies(Utility.getSortKey(getActivity()), "1");

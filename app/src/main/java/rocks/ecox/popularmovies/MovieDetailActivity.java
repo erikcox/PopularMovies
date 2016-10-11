@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Activity to display movie details once clicked on in MainActivity.
+ * Activity to display movie details once clicked on in MainActivityFragment
  */
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -26,8 +26,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         Intent intent = this.getIntent();
+        /** Change the ActionBar title */
         getSupportActionBar().setTitle(R.string.title_movie_details);
 
+        /** Populate the ImageView and TextViews from the Intent array */
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             ArrayList<String> movieDetailLst = intent.getStringArrayListExtra(Intent.EXTRA_TEXT);
             ImageView poster = (ImageView) findViewById(R.id.ivPosterThumbnail);

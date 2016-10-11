@@ -58,6 +58,7 @@ public class Movie implements Parcelable {
         return mSynopsis;
     }
 
+    /** Reformats TMDB release date from yyyy-MM-dd to MM-dd-yyyy */
     private String formatReleaseDate(String releaseDate) throws ParseException {
         if(releaseDate != null && !releaseDate.equals("")) {
             SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -69,6 +70,7 @@ public class Movie implements Parcelable {
         }
     }
 
+    /** Creates a Movie object  from a parcel*/
     private Movie(Parcel parcel){
         mId = parcel.readString();
         mTitle = parcel.readString();
@@ -84,6 +86,7 @@ public class Movie implements Parcelable {
         return 0;
     }
 
+    /** Creates a parcel from a Movie object */
     public void writeToParcel(Parcel parcel, int i){
         parcel.writeString(mId);
         parcel.writeString(mTitle);

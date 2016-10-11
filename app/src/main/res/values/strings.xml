@@ -1,13 +1,18 @@
 <!--Copyright (C) 2016 Erik Cox-->
 <resources>
+    <!--ActionBar Titles-->
     <string name="app_name">Popular Movies</string>
     <string name="app_name_rating">Highly Rated Movies</string>
+    <string name="title_movie_details">Movie Details</string>
+    <!--TMDB sorting keys-->
     <string name="action_sort_popular">popular</string>
     <string name="action_sort_rating">top_rated</string>
+    <!--Sort menu text-->
     <string name="title_sort_popular">Sort by most popular</string>
     <string name="title_sort_rating">Sort by highest rated</string>
+    <!--Default values for view containers-->
     <string name="description_movie_poster">Movie poster</string>
     <string name="movie_title">Movie Title</string>
+    <!--sharedPreferences key name for sorting menu-->
     <string name="sortPrefKey">SortBy</string>
-    <string name="title_movie_details">Movie Details</string>
 </resources>

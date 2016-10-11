@@ -30,6 +30,7 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private final String TAG = FetchMovieTask.class.getSimpleName();
 
+    /** Returns ArrayList of Movie objects when done. */
     public interface AsyncResponse {
         void processFinish(ArrayList<Movie> output);
     }
@@ -40,7 +41,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         this.delegate = delegate;
     }
 
-    /** Turns Movie DB's JSON string into Movie objects and populates SQLite DB */
+    /** Turns Movie DB's JSON string into Movie objects */
     private static ArrayList<Movie> getMovieDataFromJson(String movieJsonStr)
             throws JSONException, ParseException {
         final String MOVIE_LIST = "results";

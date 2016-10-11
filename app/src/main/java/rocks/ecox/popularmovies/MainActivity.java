@@ -12,21 +12,28 @@ import android.view.MenuItem;
 
 import com.facebook.stetho.Stetho;
 
+/**
+ * MainActivity
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Error here
+        setContentView(R.layout.activity_main);
+        // Add Stetho for debugging
         Stetho.initializeWithDefaults(this);
     }
 
+    /** Creates the sort menu */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_sort, menu);
         return true;
     }
 
+    /** Saves sort order as a sharedPreference and updates the menu text and ActionBar title */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Activity activity = this;

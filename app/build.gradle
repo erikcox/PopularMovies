@@ -1,3 +1,4 @@
+//Copyright (C) 2016 Erik Cox
 apply plugin: 'com.android.application'
 
 android {

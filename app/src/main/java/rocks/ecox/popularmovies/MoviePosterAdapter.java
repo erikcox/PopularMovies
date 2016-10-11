@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Custom adapter for the movie poster RecyclerView
+ * Custom adapter for the movie poster GridView
  */
 
 public class MoviePosterAdapter extends ArrayAdapter<Movie> {
@@ -32,6 +32,7 @@ public class MoviePosterAdapter extends ArrayAdapter<Movie> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_poster, parent, false);
         }
 
+        /** Set the movie poster in the ImageView */
         ImageView poster = (ImageView) convertView.findViewById(R.id.ivPoster);
         Picasso.with(getContext())
                 .load(movie.getPoster())

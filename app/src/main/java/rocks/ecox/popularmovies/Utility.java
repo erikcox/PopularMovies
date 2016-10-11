@@ -12,24 +12,31 @@ import android.net.NetworkInfo;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * A class of common tasks
+ */
+
 public class Utility {
 
+    /** Gets the value of the sortBy sharedPreference */
     static String getSortKey(Activity activity) {
-        SharedPreferences pref = activity.getSharedPreferences("MoviePrefs", MODE_PRIVATE);
-        return pref.getString("SortBy", "popular");
+        SharedPreferences mPref = activity.getSharedPreferences("MoviePrefs", MODE_PRIVATE);
+        return mPref.getString("SortBy", "popular");
     }
 
+    /** Saves the value of sortBy to a sharedPreference */
     static void setSortKey(Activity activity, String choice) {
-        SharedPreferences pref = activity.getSharedPreferences("MoviePrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("SortBy",choice);
-        editor.apply();
+        SharedPreferences mPref = activity.getSharedPreferences("MoviePrefs", MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mPref.edit();
+        mEditor.putString("SortBy",choice);
+        mEditor.apply();
     }
 
+    /** Checks to see if a network connection is available */
     static boolean isOnline(Context context) {
-        ConnectivityManager cm =
+        ConnectivityManager mCm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnected();
+        NetworkInfo mNetInfo = mCm.getActiveNetworkInfo();
+        return mNetInfo != null && mNetInfo.isConnected();
     }
 }
