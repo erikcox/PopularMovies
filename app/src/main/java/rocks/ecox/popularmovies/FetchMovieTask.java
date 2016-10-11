@@ -19,9 +19,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
@@ -31,7 +29,6 @@ import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private final String TAG = FetchMovieTask.class.getSimpleName();
-    private int pageNum = 1;
 
     public interface AsyncResponse {
         void processFinish(ArrayList<Movie> output);
@@ -55,13 +52,13 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         final String RELEASE_DATE = "release_date";
         final String RATING = "vote_average";
 
+        // TODO: Allow for getting different sizes in Stage 2
         final String sizeList[] = {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
         final String POSTER_SIZE = sizeList[2];
         final String THUMBNAIL_SIZE = sizeList[0];
 
         final String POSTER_URL = "http://image.tmdb.org/t/p/" + POSTER_SIZE;
         final String THUMBNAIL_URL = "http://image.tmdb.org/t/p/" + THUMBNAIL_SIZE;
-        SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         JSONObject movieJSON = new JSONObject(movieJsonStr);
         JSONArray movieArray = movieJSON.getJSONArray(MOVIE_LIST);
@@ -70,7 +67,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         for(int i = 0; i < movieArray.length(); i++) {
             JSONObject movieJson = movieArray.getJSONObject(i);
             Movie movie = new Movie(movieJson.getString(MOVIE_ID), movieJson.getString(TITLE),
-                    movieJson.getString(POSTER_PATH), (POSTER_URL + movieJson.getString(POSTER_PATH)),
+                    (POSTER_URL + movieJson.getString(POSTER_PATH)),
                     THUMBNAIL_URL + movieJson.getString(POSTER_PATH),
                     movieJson.getString(RELEASE_DATE), movieJson.getString(RATING),
                     movieJson.getString(OVERVIEW));
@@ -98,11 +95,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
             Uri.Builder uriBuilder = Uri.parse(BASE_URL + params[0]).buildUpon()
                     .appendQueryParameter(API_KEY_PARAM, api_key);
-
-            // If sorted by rating return 500
-            if (params[0].equals("vote_average")) {
-                uriBuilder.appendQueryParameter(VOTE_COUNT_THRESHOLD, "500");
-            }
 
             Uri completeUri = uriBuilder.build();
             URL url = new URL(completeUri.toString());
