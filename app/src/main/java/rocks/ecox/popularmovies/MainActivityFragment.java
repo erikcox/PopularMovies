@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,8 +28,9 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
 
-        new FetchMovieTask((FetchMovieTask.AsyncResponse) this).execute("popular", "1");
+        fetchMovies(Utility.getSortKey(getActivity()), "1"); // popular or top_rated
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -55,8 +57,18 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
     @Override
     public void processFinish(ArrayList<Movie> output) {
         movieList = output;
+        movieAdapter.clear();
         movieAdapter.addAll(movieList);
         movieAdapter.notifyDataSetChanged();
+    }
+
+    public void fetchMovies(String sortBy, String page) {
+        new FetchMovieTask((FetchMovieTask.AsyncResponse) this).execute(sortBy, page);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        fetchMovies(Utility.getSortKey(getActivity()), "1");
+        return true;
     }
 
 }

@@ -2,8 +2,11 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="app_name_rating">Highly Rated Movies</string>
-    <string name="action_sort_popular">Sort by most popular</string>
-    <string name="action_sort_rating">Sort by highest rated</string>
+    <string name="action_sort_popular">popular</string>
+    <string name="action_sort_rating">top_rated</string>
+    <string name="title_sort_popular">Sort by most popular</string>
+    <string name="title_sort_rating">Sort by highest rated</string>
     <string name="description_movie_poster">Movie poster</string>
     <string name="movie_title">Movie Title</string>
+    <string name="sortPrefKey">SortBy</string>
 </resources>

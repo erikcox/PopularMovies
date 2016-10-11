@@ -4,8 +4,7 @@
 
 package rocks.ecox.popularmovies;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -30,24 +29,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MoviePrefs", MODE_PRIVATE);
-        Editor editor = pref.edit();
+        Activity activity = this;
+        String sortBy = Utility.getSortKey(activity);
+        String ratingSortTitle = getResources().getString(R.string.title_sort_rating);
+        String popularSortTitle = getResources().getString(R.string.title_sort_popular);
+        String ratingSortKey = getResources().getString(R.string.action_sort_rating);
+        String popularSortKey = getResources().getString(R.string.action_sort_popular);
+        String popularAppName = getResources().getString(R.string.app_name_rating);
+        String ratingAppName = getResources().getString(R.string.app_name);
 
-        if(item.getTitle() == getResources().getString(R.string.action_sort_popular) && getSupportActionBar() != null) {
-            item.setTitle(getResources().getString(R.string.action_sort_rating));
-            getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
-            editor.putString("SortBy", "popular");
+        if(sortBy.equals(popularSortKey)) {
+            item.setTitle(ratingSortTitle);
+            getSupportActionBar().setTitle(ratingAppName);
+            Utility.setSortKey(activity, ratingSortKey);
         } else {
-            item.setTitle(getResources().getString(R.string.action_sort_popular));
-            if(getSupportActionBar() != null){
-                getSupportActionBar().setTitle(getResources().getString(R.string.app_name_rating));
-            }
-            editor.putString("SortBy", "top_rated");
+            item.setTitle(popularSortTitle);
+            getSupportActionBar().setTitle(popularAppName);
+            Utility.setSortKey(activity, popularSortKey);
+
         }
 
-        editor.apply();
         return super.onOptionsItemSelected(item);
-
     }
 
 }

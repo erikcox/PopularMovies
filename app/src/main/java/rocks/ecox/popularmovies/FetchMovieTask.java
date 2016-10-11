@@ -89,17 +89,14 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         String api_key = TMDB_API_KEY;
 
         try {
-            final String BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
+            final String BASE_URL = "http://api.themoviedb.org/3/movie/";
             final String LANGUAGE = "language";
             final String PAGE = "page";
             final String SORT_PARAM = "sort_by";
             final String VOTE_COUNT_THRESHOLD = "vote_count.gte";
             final String API_KEY_PARAM = "api_key";
 
-            Uri.Builder uriBuilder = Uri.parse(BASE_URL).buildUpon()
-                    .appendQueryParameter(LANGUAGE, "en")
-                    .appendQueryParameter(PAGE, params[1])
-                    .appendQueryParameter(SORT_PARAM, params[0]+".desc")
+            Uri.Builder uriBuilder = Uri.parse(BASE_URL + params[0]).buildUpon()
                     .appendQueryParameter(API_KEY_PARAM, api_key);
 
             // If sorted by rating return 500
