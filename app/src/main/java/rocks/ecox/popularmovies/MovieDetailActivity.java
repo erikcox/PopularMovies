@@ -14,8 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.activeandroid.Cache.getContext;
-
 /**
  * Activity to display movie details once clicked on in MainActivity.
  */
@@ -37,7 +35,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.tvTitle))
                     .setText(movieDetailLst.get(0));
 
-            Picasso.with(getContext())
+            Picasso.with(getApplicationContext())
                     .load(movieDetailLst.get(1))
                     .error(R.drawable.poster_placeholder)
                     .placeholder(R.drawable.poster_placeholder)

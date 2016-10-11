@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,11 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        fetchMovies(Utility.getSortKey(getActivity()), "1"); // popular or top_rated
+        if(Utility.isOnline(getActivity())) {
+            fetchMovies(Utility.getSortKey(getActivity()), "1");
+        } else {
+            Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
+        }
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -67,7 +72,11 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        fetchMovies(Utility.getSortKey(getActivity()), "1");
+        if(Utility.isOnline(getActivity())) {
+            fetchMovies(Utility.getSortKey(getActivity()), "1");
+        } else {
+            Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
+        }
         return true;
     }
 

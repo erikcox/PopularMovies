@@ -4,37 +4,22 @@
 
 package rocks.ecox.popularmovies;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
- * Creates a movie object and puts it's data into SQLite.
+ * Creates a movie object
  */
 
-@Table(name = "Movies", id = "id")
-public class Movie extends Model{
-    @Column(name = "Movie_ID", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+public class Movie {
     private String mId;
-    @Column(name = "Title")
     private String mTitle;
-    @Column(name = "PosterPath")
     private String mPosterPath;
-    @Column(name = "Poster")
     private String mPoster;
-    @Column(name = "PosterThumbnail")
     private String mPosterThumbnail;
-    @Column(name = "ReleaseDate")
     private String mReleaseDate;
-    @Column(name = "Rating")
     private String mUserRating;
-    @Column(name = "Synopsis")
     private String mSynopsis;
 
     public Movie(){
@@ -81,16 +66,9 @@ public class Movie extends Model{
             SimpleDateFormat outFormat = new SimpleDateFormat("MM-dd-yyyy");
             Date d = inFormat.parse(releaseDate);
             return outFormat.format(d);
-        } else {
+        } else {i
             return "Unknown";
         }
-    }
-
-    // Get all movies from DB
-    public static List<Movie> getAll() {
-        return new Select()
-                .from(Movie.class)
-                .execute();
     }
 
 }
