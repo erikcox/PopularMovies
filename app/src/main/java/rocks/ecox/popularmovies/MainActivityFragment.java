@@ -24,6 +24,8 @@ import java.util.List;
 public class MainActivityFragment extends Fragment implements FetchMovieTask.AsyncResponse {
     static List<Movie> mMovieList = new ArrayList<Movie>();
     static MoviePosterAdapter mMovieAdapter;
+    final String PAGE = "1";
+    final String NETWORK_FAIL = "Network connection unavailable.";
 
     /** Check to see if we have saved data */
     @Override
@@ -32,7 +34,7 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
         if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
             /** See if we have a network connection */
             if(Utility.isOnline(getActivity())) {
-                fetchMovies(Utility.getSortKey(getActivity()), "1");
+                fetchMovies(Utility.getSortKey(getActivity()), PAGE);
             } else {
                 Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
             }
@@ -103,9 +105,9 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
     /** Update adapter with new Movie objects when new sort order is chosen in the menu */
     public boolean onOptionsItemSelected(MenuItem item) {
         if(Utility.isOnline(getActivity())) {
-            fetchMovies(Utility.getSortKey(getActivity()), "1");
+            fetchMovies(Utility.getSortKey(getActivity()), PAGE);
         } else {
-            Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), NETWORK_FAIL, Toast.LENGTH_SHORT).show();
         }
         return true;
     }
