@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 /**
  * Activity to display movie details once clicked on in MainActivityFragment
  */
@@ -29,28 +27,28 @@ public class MovieDetailActivity extends AppCompatActivity {
         /** Change the ActionBar title */
         getSupportActionBar().setTitle(R.string.title_movie_details);
 
-        /** Populate the ImageView and TextViews from the Intent array */
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            ArrayList<String> movieDetailLst = intent.getStringArrayListExtra(Intent.EXTRA_TEXT);
+        /** Populate the ImageView and TextViews from the parcelable */
+        if (intent != null && intent.hasExtra("movie")) {
+            Movie movie = intent.getExtras().getParcelable("movie");
             ImageView poster = (ImageView) findViewById(R.id.ivPosterThumbnail);
 
             ((TextView) findViewById(R.id.tvTitle))
-                    .setText(movieDetailLst.get(0));
+                    .setText(movie.getTitle());
 
             Picasso.with(getApplicationContext())
-                    .load(movieDetailLst.get(1))
+                    .load(movie.getPoster())
                     .error(R.drawable.poster_placeholder)
                     .placeholder(R.drawable.poster_placeholder)
                     .into(poster);
 
             ((TextView) findViewById(R.id.tvReleaseDate))
-                    .setText(movieDetailLst.get(2));
+                    .setText(movie.getReleaseDate());
 
             ((TextView) findViewById(R.id.tvRating))
-                    .setText(movieDetailLst.get(3));
+                    .setText(movie.getUserRating());
 
             ((TextView) findViewById(R.id.tvSynopsis))
-                    .setText(movieDetailLst.get(4));
+                    .setText(movie.getSynopsis());
         }
     }
 }

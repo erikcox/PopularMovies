@@ -16,7 +16,6 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,11 +76,9 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movie = mMovieAdapter.getItem(position);
 
-                /** Create an array of movie details to pass to the DetailActivity */
-                String[] movieDetails = {movie.getTitle(), movie.getThumbnail(), movie.getReleaseDate(), movie.getUserRating(), movie.getSynopsis()};
-                ArrayList<String> movieDetailsLst = new ArrayList<String>(Arrays.asList(movieDetails));
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class)
-                        .putStringArrayListExtra(Intent.EXTRA_TEXT, movieDetailsLst);
+                /** Create Parcelable of movie object and pass with Intent to the DetailActivity */
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                intent.putExtra("movie", movie);
                 startActivity(intent);
             }
         });
