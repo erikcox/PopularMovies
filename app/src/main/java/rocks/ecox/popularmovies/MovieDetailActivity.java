@@ -5,6 +5,7 @@
 package rocks.ecox.popularmovies;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -12,16 +13,28 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindDrawable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Activity to display movie details once clicked on in MainActivityFragment
  */
 
 public class MovieDetailActivity extends AppCompatActivity {
+    @BindView(R.id.tvTitle) TextView title;
+    @BindView(R.id.ivPosterThumbnail) ImageView poster;
+    @BindDrawable(R.drawable.poster_placeholder)
+    Drawable placeholder;
+    @BindView(R.id.tvReleaseDate) TextView releaseDate;
+    @BindView(R.id.tvRating) TextView rating;
+    @BindView(R.id.tvSynopsis) TextView synopsis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+        ButterKnife.bind(this);
 
         Intent intent = this.getIntent();
         /** Change the ActionBar title */
@@ -30,25 +43,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         /** Populate the ImageView and TextViews from the parcelable */
         if (intent != null && intent.hasExtra("movie")) {
             Movie movie = intent.getExtras().getParcelable("movie");
-            ImageView poster = (ImageView) findViewById(R.id.ivPosterThumbnail);
-
-            ((TextView) findViewById(R.id.tvTitle))
-                    .setText(movie.getTitle());
 
             Picasso.with(getApplicationContext())
                     .load(movie.getPoster())
-                    .error(R.drawable.poster_placeholder)
-                    .placeholder(R.drawable.poster_placeholder)
+                    .error(placeholder)
+                    .placeholder(placeholder)
                     .into(poster);
 
-            ((TextView) findViewById(R.id.tvReleaseDate))
-                    .setText(movie.getReleaseDate());
-
-            ((TextView) findViewById(R.id.tvRating))
-                    .setText(movie.getUserRating());
-
-            ((TextView) findViewById(R.id.tvSynopsis))
-                    .setText(movie.getSynopsis());
+            title.setText(movie.getTitle());
+            releaseDate.setText(movie.getReleaseDate());
+            rating.setText(movie.getUserRating());
+            synopsis.setText(movie.getSynopsis());
         }
     }
 }
