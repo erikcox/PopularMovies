@@ -33,7 +33,9 @@ public class MoviePosterAdapter extends ArrayAdapter<Movie> {
         }
 
         /** Set the movie poster in the ImageView */
-        ImageView poster = (ImageView) convertView.findViewById(R.id.ivPoster);
+        ViewHolder viewHolder = new ViewHolder(convertView);
+        convertView.setTag(viewHolder);
+        ImageView poster = viewHolder.poster;
         Picasso.with(getContext())
                 .load(movie.getPoster())
                 .error(R.drawable.poster_placeholder)
@@ -41,5 +43,13 @@ public class MoviePosterAdapter extends ArrayAdapter<Movie> {
                 .into(poster);
 
         return convertView;
+    }
+
+    private static class ViewHolder {
+        final ImageView poster;
+
+        ViewHolder(View view) {
+            poster = (ImageView) view.findViewById(R.id.ivPoster);
+        }
     }
 }
