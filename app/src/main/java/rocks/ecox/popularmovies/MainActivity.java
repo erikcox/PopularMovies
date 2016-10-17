@@ -12,6 +12,8 @@ import android.view.MenuItem;
 
 import com.facebook.stetho.Stetho;
 
+import rocks.ecox.popularmovies.utilities.Utility;
+
 /**
  * MainActivity
  */

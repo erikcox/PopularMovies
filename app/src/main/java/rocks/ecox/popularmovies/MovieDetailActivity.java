@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rocks.ecox.popularmovies.models.Movie;
 
 /**
  * Activity to display movie details once clicked on in MainActivityFragment
@@ -52,7 +53,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             title.setText(movie.getTitle());
             releaseDate.setText(movie.getReleaseDate());
-            rating.setText(movie.getUserRating());
+            rating.setText(movie.getUserRating().toString());
             synopsis.setText(movie.getSynopsis());
         }
     }

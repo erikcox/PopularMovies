@@ -7,69 +7,69 @@ package rocks.ecox.popularmovies;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import rocks.ecox.popularmovies.adapters.MoviePosterAdapter;
+import rocks.ecox.popularmovies.models.Movie;
+
+import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 /**
  * Fragment in MainActivity that contains the movie posters
  */
-public class MainActivityFragment extends Fragment implements FetchMovieTask.AsyncResponse {
-    static List<Movie> mMovieList = new ArrayList<Movie>();
-    static MoviePosterAdapter mMovieAdapter;
+public class MainActivityFragment extends Fragment {
+
+    private SwipeRefreshLayout swipeContainer;
+    ArrayList<Movie> mMovieList;
+    MoviePosterAdapter mMovieAdapter;
+    GridView gridView;
+
+    AsyncHttpClient client = new AsyncHttpClient();
+    final String api_key = TMDB_API_KEY;
+    final String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=" + api_key;
     final String PAGE = "1";
     final String NETWORK_FAIL = "Network connection unavailable.";
 
-    /** Check to see if we have saved data */
+    /**
+     * Check to see if we have saved data
+     */
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
-            /** See if we have a network connection */
-            if(Utility.isOnline(getActivity())) {
-                fetchMovies(Utility.getSortKey(getActivity()), PAGE);
-            } else {
-                Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            mMovieAdapter.clear();
-            ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");
-            mMovieAdapter.addAll(savedMovies);
-        }
+
+
     }
 
     public MainActivityFragment() {
     }
 
-    /** Save the movies in the view on exit or changing views */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        /** Make an ArrayList of the Movie objects in the mMovieAdapter */
-        ArrayList<Movie> arrayList = new ArrayList<>();
-        for(int i = 0; i < mMovieAdapter.getCount(); i++){
-            arrayList.add(mMovieAdapter.getItem(i));
-        }
-
-        outState.putParcelableArrayList("movies", arrayList);
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
+        mMovieList = new ArrayList<>();
         mMovieAdapter = new MoviePosterAdapter(getActivity(), mMovieList);
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         gridView.setAdapter(mMovieAdapter);
+        fetchMoviesAsync(0);
 
         /** Sets listener so that we can call the DetailActivity */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,28 +88,28 @@ public class MainActivityFragment extends Fragment implements FetchMovieTask.Asy
         return rootView;
     }
 
-    /** Update the adapter when the AsyncTask is complete */
-    @Override
-    public void processFinish(ArrayList<Movie> output) {
-        mMovieList = output;
-        mMovieAdapter.clear();
-        mMovieAdapter.addAll(mMovieList);
-        mMovieAdapter.notifyDataSetChanged();
-    }
+    public void fetchMoviesAsync(int page) {
+        client.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONArray moviesJsonResults = null;
 
-    /** Create a new AsyncTask to get Movie objects from TMDB api */
-    public void fetchMovies(String sortBy, String page) {
-        new FetchMovieTask((FetchMovieTask.AsyncResponse) this).execute(sortBy, page);
-    }
+                try {
+                    moviesJsonResults = response.getJSONArray("results");
+                    mMovieAdapter.clear();
+                    mMovieAdapter.addAll(Movie.fromJSONArray(moviesJsonResults));
+                    mMovieAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-    /** Update adapter with new Movie objects when new sort order is chosen in the menu */
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(Utility.isOnline(getActivity())) {
-            fetchMovies(Utility.getSortKey(getActivity()), PAGE);
-        } else {
-            Toast.makeText(getActivity(), NETWORK_FAIL, Toast.LENGTH_SHORT).show();
-        }
-        return true;
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
 }

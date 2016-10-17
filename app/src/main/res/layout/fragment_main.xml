@@ -3,12 +3,19 @@
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <GridView
-        android:id="@+id/gridview_movie"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="auto_fit">
+        android:layout_height="match_parent">
 
-    </GridView>
+        <GridView
+            android:id="@+id/gridview_movie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="auto_fit">
+
+        </GridView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>
