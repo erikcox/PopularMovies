@@ -11,5 +11,6 @@
     <dimen name="detail_horizontal_margin">16dp</dimen>
     <dimen name="detail_vertical_margin">16dp</dimen>
     <dimen name="overview_margin">16dp</dimen>
+    <dimen name="padding_detail">16dp</dimen>
 
 </resources>

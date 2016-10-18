@@ -15,4 +15,6 @@
     <string name="movie_title">Movie Title</string>
     <!--sharedPreferences key name for sorting menu-->
     <string name="sortPrefKey">SortBy</string>
+    <string name="placeholder_date">10/04/1902</string>
+    <string name="placeholder_synopsis">Lorem ipsum dolor sit amet, mea te alia veritus, vix ex suavitate ullamcorper. Duo aliquam invenire te, quodsi mnesarchum ne pri, vel rebum congue causae et. Eam cu illud porro. Qui ad everti copiosae scaevola, ad quis esse dicam usu. Pri populo molestiae ex, ut vix legere comprehensam. Qui ei mucius tritani probatus, te mucius corpora sea. Ornatus consetetur ne per, in ius habeo latine, pro ex noluisse disputationi. Pri an justo laoreet, mazim impedit inermis usu ei, quod dolorum splendide ex nam. Utamur democritum vituperatoribus an vel, ceteros scripserit usu ne, mnesarchum voluptatum scribentur nam et. No homero dissentias est.</string>
 </resources>

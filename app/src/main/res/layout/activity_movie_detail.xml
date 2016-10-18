@@ -1,7 +1,9 @@
 <!--Copyright (C) 2016 Erik Cox-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:clipToPadding="false">
 
     <LinearLayout
         android:id="@+id/MovieDetail_container"
@@ -11,75 +13,64 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
-        <!--Title-->
+
+        <ImageView
+            android:id="@+id/ivBackdrop"
+            tools:src="@drawable/poster_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_title"
+            android:scaleType="fitCenter"
+            />
+
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/movie_title"
-            android:textSize="@dimen/detail_text_size_title"
-            android:textStyle="bold"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/detail_vertical_margin"
+            android:paddingLeft="@dimen/padding_detail"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@android:color/white"
+            tools:text="@string/movie_title"/>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/tvReleaseDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_detail"
             android:layout_marginBottom="@dimen/detail_vertical_margin"
-            android:layout_marginTop="@dimen/detail_vertical_margin"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:baselineAligned="false">
+            android:drawableLeft="@drawable/ic_calendar"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/padding_detail"
+            android:gravity="start"
+            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?android:textAppearanceMedium"/>
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:layout_weight="1">
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_star"
+            android:drawableStart="@drawable/ic_star"
+            android:drawablePadding="@dimen/padding_detail"
+            android:gravity="start"
+            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:paddingLeft="@dimen/padding_detail"
+            tools:text="@string/placeholder_date"/>
 
-                <ImageView
-                    android:id="@+id/ivPosterThumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/movie_title"
-                    android:scaleType="fitCenter"
-                    />
-            </FrameLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvReleaseDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/detail_vertical_margin"
-                    android:drawableLeft="@drawable/ic_calendar"
-                    android:drawableStart="@drawable/ic_calendar"
-                    android:gravity="start"
-                    android:textSize="@dimen/detail_text_size"/>
-
-                <TextView
-                    android:id="@+id/tvRating"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_star"
-                    android:drawableStart="@drawable/ic_star"
-                    android:gravity="start"
-                    android:textSize="@dimen/detail_text_size"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/tvSynopsis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/detail_vertical_margin"
+            android:layout_marginBottom="@dimen/padding_detail"
+            android:paddingTop="@dimen/padding_detail"
             android:paddingLeft="@dimen/overview_margin"
-            android:textSize="@dimen/detail_text_size"/>
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/detail_text_size"
+            tools:text="@string/placeholder_synopsis"/>
 
     </LinearLayout>
 </ScrollView>
