@@ -15,10 +15,10 @@ import com.facebook.stetho.Stetho;
 import rocks.ecox.popularmovies.utilities.Utility;
 
 /**
- * MainActivity
+ * MovieActivity
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

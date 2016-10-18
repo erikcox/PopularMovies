@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MovieActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -22,7 +22,7 @@
         </activity>
         <!--Inform program of parent view to allow for back button on title bar-->
         <activity android:name=".MovieDetailActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MovieActivity">
         </activity>
     </application>
 

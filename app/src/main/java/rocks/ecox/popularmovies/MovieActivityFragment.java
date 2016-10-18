@@ -35,9 +35,9 @@ import rocks.ecox.popularmovies.utilities.Utility;
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 /**
- * Fragment in MainActivity that contains the movie posters
+ * Fragment in MovieActivity that contains the movie posters
  */
-public class MainActivityFragment extends Fragment {
+public class MovieActivityFragment extends Fragment {
 
     private SwipeRefreshLayout swipeContainer;
     ArrayList<Movie> mMovieList;
@@ -57,7 +57,7 @@ public class MainActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public MainActivityFragment() {
+    public MovieActivityFragment() {
     }
 
     /** Save the movies in the view on exit or changing views */

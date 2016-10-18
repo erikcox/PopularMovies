@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import rocks.ecox.popularmovies.models.Movie;
 
 /**
- * Activity to display movie details once clicked on in MainActivityFragment
+ * Activity to display movie details once clicked on in MovieActivityFragment
  */
 
 public class MovieDetailActivity extends AppCompatActivity {
