@@ -5,7 +5,6 @@
 package rocks.ecox.popularmovies;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +25,7 @@ import rocks.ecox.popularmovies.models.Movie;
 public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.tvTitle) TextView title;
     @BindView(R.id.ivBackdrop) ImageView poster;
-    @BindDrawable(R.drawable.poster_placeholder)
+    @BindDrawable(R.drawable.poster_placeholder_backdrop)
     Drawable placeholder;
     @BindView(R.id.tvReleaseDate) TextView releaseDate;
     @BindView(R.id.tvRating) TextView rating;
@@ -37,7 +36,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
-        getWindow().getDecorView().setBackgroundColor(Color.BLACK);
 
         Intent intent = this.getIntent();
         /** Change the ActionBar title */

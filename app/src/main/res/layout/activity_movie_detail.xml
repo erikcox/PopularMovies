@@ -1,12 +1,16 @@
 <!--Copyright (C) 2016 Erik Cox-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="false"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:background="@android:color/black"
+            android:id="@+id/svMovies">
 
     <LinearLayout
-        android:id="@+id/MovieDetail_container"
+        android:id="@+id/ll_movie_detail"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -16,13 +20,14 @@
 
         <ImageView
             android:id="@+id/ivBackdrop"
-            tools:src="@drawable/poster_placeholder"
+            tools:src="@drawable/poster_placeholder_backdrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:contentDescription="@string/movie_title"
             android:scaleType="fitCenter"
-            />
+            android:layout_height="272dp"
+            android:layout_gravity="center"
+            android:cropToPadding="false"
+            android:adjustViewBounds="true"/>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -30,22 +35,30 @@
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/detail_vertical_margin"
             android:paddingLeft="@dimen/padding_detail"
+            android:paddingStart="@dimen/padding_detail"
+            android:paddingEnd="@dimen/padding_detail"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@android:color/white"
-            tools:text="@string/movie_title"/>
+            tools:text="@string/movie_title"
+            android:text="@string/movie_title"
+            android:contentDescription="@string/movie_title"/>
 
         <TextView
             android:id="@+id/tvReleaseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_detail"
+            android:paddingStart="@dimen/padding_detail"
+            android:paddingEnd="@dimen/padding_detail"
             android:layout_marginBottom="@dimen/detail_vertical_margin"
             android:drawableLeft="@drawable/ic_calendar"
             android:drawableStart="@drawable/ic_calendar"
             android:drawablePadding="@dimen/padding_detail"
             android:gravity="start"
             android:textColor="@android:color/darker_gray"
-            android:textAppearance="?android:textAppearanceMedium"/>
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="@string/text_release_date"
+            android:contentDescription="Release @string/placeholder_date"/>
 
         <TextView
             android:id="@+id/tvRating"
@@ -58,7 +71,10 @@
             android:textColor="@android:color/darker_gray"
             android:textAppearance="?android:textAppearanceMedium"
             android:paddingLeft="@dimen/padding_detail"
-            tools:text="@string/placeholder_date"/>
+            android:paddingStart="@dimen/padding_detail"
+            android:paddingEnd="@dimen/padding_detail"
+            tools:text="@string/text_rating"
+            android:contentDescription="@string/movie_rating"/>
 
 
         <TextView
@@ -67,10 +83,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_detail"
             android:paddingTop="@dimen/padding_detail"
-            android:paddingLeft="@dimen/overview_margin"
+            android:paddingLeft="@dimen/padding_detail"
+            android:paddingStart="@dimen/padding_detail"
+            android:paddingEnd="@dimen/padding_detail"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/detail_text_size"
-            tools:text="@string/placeholder_synopsis"/>
+            tools:text="@string/placeholder_synopsis"
+            android:contentDescription="@string/movie_synopsis"/>
 
     </LinearLayout>
 </ScrollView>
