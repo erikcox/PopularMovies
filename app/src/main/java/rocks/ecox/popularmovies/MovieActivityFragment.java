@@ -30,9 +30,8 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.adapters.MoviePosterAdapter;
 import rocks.ecox.popularmovies.models.Movie;
+import rocks.ecox.popularmovies.utilities.Constants;
 import rocks.ecox.popularmovies.utilities.Utility;
-
-import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
 /**
  * Fragment in MovieActivity that contains the movie posters
@@ -43,11 +42,8 @@ public class MovieActivityFragment extends Fragment {
     ArrayList<Movie> mMovieList;
     MoviePosterAdapter mMovieAdapter;
     GridView gridView;
-
     AsyncHttpClient client = new AsyncHttpClient();
-    final String apiKey = TMDB_API_KEY;
     final int PAGE = 0;
-    final String NETWORK_FAIL = "Network connection unavailable.";
 
     /**
      * Check to see if we have saved data
@@ -87,7 +83,7 @@ public class MovieActivityFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
             }
         } else {
             mMovieAdapter.clear();
@@ -151,7 +147,7 @@ public class MovieActivityFragment extends Fragment {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(getActivity(), "Network connection unavailable.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -159,7 +155,7 @@ public class MovieActivityFragment extends Fragment {
     public void fetchMoviesAsync(int page, String sortBy) throws MalformedURLException {
         String baseUrl = "https://api.themoviedb.org/3/movie/";
         Uri.Builder uriBuilder = Uri.parse(baseUrl + sortBy).buildUpon()
-                .appendQueryParameter("api_key", apiKey);
+                .appendQueryParameter("api_key", Constants.API_KEY);
 
         Uri completeUri = uriBuilder.build();
         String url = completeUri.toString();
@@ -187,5 +183,4 @@ public class MovieActivityFragment extends Fragment {
             }
         });
     }
-
 }

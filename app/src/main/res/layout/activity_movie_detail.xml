@@ -23,11 +23,11 @@
             tools:src="@drawable/poster_placeholder_backdrop"
             android:layout_width="match_parent"
             android:contentDescription="@string/movie_title"
-            android:scaleType="fitCenter"
-            android:layout_height="272dp"
+            android:scaleType="fitStart"
             android:layout_gravity="center"
             android:cropToPadding="false"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:layout_height="250dp"/>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/padding_detail"
             android:paddingStart="@dimen/padding_detail"
-            android:paddingEnd="@dimen/padding_detail"
+            android:paddingEnd="@dimen/item_margin"
             android:layout_marginBottom="@dimen/detail_vertical_margin"
             android:drawableLeft="@drawable/ic_calendar"
             android:drawableStart="@drawable/ic_calendar"
@@ -72,7 +72,7 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:paddingLeft="@dimen/padding_detail"
             android:paddingStart="@dimen/padding_detail"
-            android:paddingEnd="@dimen/padding_detail"
+            android:paddingEnd="@dimen/item_margin"
             tools:text="@string/text_rating"
             android:contentDescription="@string/movie_rating"/>
 
@@ -90,6 +90,11 @@
             android:textSize="@dimen/detail_text_size"
             tools:text="@string/placeholder_synopsis"
             android:contentDescription="@string/movie_synopsis"/>
+
+        <com.google.android.youtube.player.YouTubePlayerView
+            android:id="@+id/player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </ScrollView>

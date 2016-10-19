@@ -21,6 +21,7 @@ import java.util.Date;
  */
 
 public class Movie implements Parcelable {
+    private String mId;
     private String mTitle;
     private String mPosterPath;
     private String mBackdropPath;
@@ -28,6 +29,7 @@ public class Movie implements Parcelable {
     private Double mUserRating;
     private String mSynopsis;
 
+    public String getId() { return mId; }
     public String getTitle() { return mTitle; }
     public String getPoster() {
         return String.format("https://image.tmdb.org/t/p/w342/%s", mPosterPath);
@@ -63,12 +65,13 @@ public class Movie implements Parcelable {
     }
 
     public Movie(JSONObject jsonObject) throws JSONException, ParseException{
+        this.mId = jsonObject.getString("id");
+        this.mTitle = jsonObject.getString("original_title");
         this.mPosterPath = jsonObject.getString("poster_path");
         this.mBackdropPath = jsonObject.getString("backdrop_path");
-        this.mTitle = jsonObject.getString("original_title");
-        this.mSynopsis = jsonObject.getString("overview");
-        this.mUserRating = jsonObject.getDouble("vote_average");
         this.mReleaseDate = formatReleaseDate(jsonObject.getString("release_date"));
+        this.mUserRating = jsonObject.getDouble("vote_average");
+        this.mSynopsis = jsonObject.getString("overview");
     }
 
     public static ArrayList<Movie> fromJSONArray(JSONArray array) {
@@ -86,6 +89,7 @@ public class Movie implements Parcelable {
 
     /** Creates a Movie object  from a parcel*/
     private Movie(Parcel parcel){
+        mId = parcel.readString();
         mTitle = parcel.readString();
         mPosterPath = parcel.readString();
         mBackdropPath = parcel.readString();
@@ -101,6 +105,7 @@ public class Movie implements Parcelable {
 
     /** Creates a parcel from a Movie object */
     public void writeToParcel(Parcel parcel, int i){
+        parcel.writeString(mId);
         parcel.writeString(mTitle);
         parcel.writeString(mPosterPath);
         parcel.writeString(mBackdropPath);
