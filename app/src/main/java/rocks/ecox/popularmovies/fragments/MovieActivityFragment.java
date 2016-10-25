@@ -2,7 +2,7 @@
  * Copyright (C) 2016 Erik Cox
  */
 
-package rocks.ecox.popularmovies;
+package rocks.ecox.popularmovies.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -28,6 +28,8 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+import rocks.ecox.popularmovies.R;
+import rocks.ecox.popularmovies.activities.MovieDetailActivity;
 import rocks.ecox.popularmovies.adapters.MoviePosterAdapter;
 import rocks.ecox.popularmovies.models.Movie;
 import rocks.ecox.popularmovies.utilities.Constants;

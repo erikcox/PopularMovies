@@ -2,18 +2,17 @@
  * Copyright (C) 2016 Erik Cox
  */
 
-package rocks.ecox.popularmovies;
+package rocks.ecox.popularmovies.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -24,15 +23,17 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import rocks.ecox.popularmovies.R;
+import rocks.ecox.popularmovies.adapters.TrailerArrayAdapter;
 import rocks.ecox.popularmovies.models.Movie;
 import rocks.ecox.popularmovies.models.Trailer;
 
-import static rocks.ecox.popularmovies.BuildConfig.YOUTUBE_API_KEY;
 import static rocks.ecox.popularmovies.utilities.Constants.APPEND_API_KEY;
 import static rocks.ecox.popularmovies.utilities.Constants.TRAILER_BASE_URL;
 
@@ -48,9 +49,12 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvReleaseDate) TextView releaseDate;
     @BindView(R.id.tvRating) TextView rating;
     @BindView(R.id.tvSynopsis) TextView synopsis;
-    @BindView(R.id.player) YouTubePlayerView youTubePlayerView;
     AsyncHttpClient client = new AsyncHttpClient();
-    public String youTubeTrailerKey = "5xVh-7ywKpE";
+    public List<String> youTubeTrailerKeys = new ArrayList<String>();
+    public Movie movie;
+    TrailerArrayAdapter adapter;
+    GridView gvTrailers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +64,13 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
 
         Intent intent = this.getIntent();
         /** Change the ActionBar title */
-        //getSupportActionBar().setTitle(R.string.title_movie_details);
+//        getActionBar().setTitle(R.string.title_movie_details);
 
         /** Populate the ImageView and TextViews from the parcelable */
         if (intent != null && intent.hasExtra("movie")) {
-            Movie movie = intent.getExtras().getParcelable("movie");
+            movie = intent.getExtras().getParcelable("movie");
             try {
-                fetchMoviesAsync(movie.getId());
+                fetchMoviesAsync(movie.getId(), this);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -84,8 +88,9 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
         }
     }
 
-    public void fetchMoviesAsync(String movieId) throws MalformedURLException {
+    public void fetchMoviesAsync(String movieId, final Activity activity) throws MalformedURLException {
         String url = String.format(TRAILER_BASE_URL, movieId) + APPEND_API_KEY;
+        String urlReview = String.format(TRAILER_BASE_URL, movieId) + "reviews" + APPEND_API_KEY;
 
         client.get(url, new JsonHttpResponseHandler() {
             @Override
@@ -97,36 +102,19 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     ArrayList<Trailer> mTrailers = new ArrayList<Trailer>();
                     trailersJsonResults = response.getJSONArray("results");
                     mTrailers.addAll(Trailer.fromJSONArray(trailersJsonResults));
-                    youTubeTrailerKey = mTrailers.get(0).getKey();
-// TODO: clean this up
-//                    ArrayList<String> youtubeUrls = new ArrayList<String>();
-//                    for (Trailer t : mTrailers) {
-//                        youtubeUrls.add(YOUTUBE_URL_BASE + t.getKey());
-//                        Toast.makeText(MovieDetailActivity.this, YOUTUBE_URL_BASE + t.getKey(), Toast.LENGTH_SHORT).show();
-//                    }
-                    // Do for loop on mTrailers if > 0, build all video urls, grab only 1st one and make a VideoPlayer object.
-                    // Later make a custom adapter and ensure the site  == YouTube. Get API key if necessary.
+                    for (Trailer t : mTrailers) {
+                        youTubeTrailerKeys.add(t.getKey());
+                    }
+                    gvTrailers = (GridView) findViewById(R.id.gvTrailers);
+                    movie.setTrailerKeys(youTubeTrailerKeys);
+                    adapter = new TrailerArrayAdapter(MovieDetailActivity.this, youTubeTrailerKeys);
+                    gvTrailers.setAdapter(adapter);
+                    adapter.addAll(youTubeTrailerKeys);
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                // Setup YouTube
-                youTubePlayerView.initialize(YOUTUBE_API_KEY,
-                        new YouTubePlayer.OnInitializedListener() {
-                            @Override
-                            public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                                YouTubePlayer youTubePlayer, boolean b) {
-
-                                youTubePlayer.cueVideo(youTubeTrailerKey);
-                            }
-                            @Override
-                            public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                                YouTubeInitializationResult youTubeInitializationResult) {
-
-                            }
-                        });
             }
-
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

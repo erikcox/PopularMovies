@@ -14,15 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MovieActivity">
+        <activity android:name=".activities.MovieActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <!--Inform program of parent view to allow for back button on title bar-->
-        <activity android:name=".MovieDetailActivity"
-            android:parentActivityName=".MovieActivity">
+        <activity android:name=".activities.MovieDetailActivity"
+            android:parentActivityName=".activities.MovieActivity">
         </activity>
     </application>
 

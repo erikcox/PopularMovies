@@ -2,7 +2,7 @@
  * Copyright (C) 2016 Erik Cox
  */
 
-package rocks.ecox.popularmovies;
+package rocks.ecox.popularmovies.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.facebook.stetho.Stetho;
 
+import rocks.ecox.popularmovies.R;
 import rocks.ecox.popularmovies.utilities.Utility;
 
 /**

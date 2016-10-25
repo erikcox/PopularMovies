@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="false"
             android:clipToPadding="false"
             android:background="@android:color/black"
@@ -58,7 +58,8 @@
             android:textColor="@android:color/darker_gray"
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="@string/text_release_date"
-            android:contentDescription="Release @string/placeholder_date"/>
+            android:contentDescription="Release @string/placeholder_date"
+            android:paddingRight="@dimen/item_margin"/>
 
         <TextView
             android:id="@+id/tvRating"
@@ -74,7 +75,8 @@
             android:paddingStart="@dimen/padding_detail"
             android:paddingEnd="@dimen/item_margin"
             tools:text="@string/text_rating"
-            android:contentDescription="@string/movie_rating"/>
+            android:contentDescription="@string/movie_rating"
+            android:paddingRight="@dimen/item_margin"/>
 
 
         <TextView
@@ -91,10 +93,15 @@
             tools:text="@string/placeholder_synopsis"
             android:contentDescription="@string/movie_synopsis"/>
 
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/player"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <!--<com.google.android.youtube.player.YouTubePlayerView-->
+            <!--android:id="@+id/player"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+        <GridView
+            android:id="@+id/gvTrailers"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </ScrollView>

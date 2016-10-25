@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Creates a movie object
@@ -28,6 +29,7 @@ public class Movie implements Parcelable {
     private String mReleaseDate;
     private Double mUserRating;
     private String mSynopsis;
+    private List<String> mTrailerKeys;
 
     public String getId() { return mId; }
     public String getTitle() { return mTitle; }
@@ -51,6 +53,8 @@ public class Movie implements Parcelable {
             return 0.0;
         }
     }
+    public void setTrailerKeys(List<String> trailerKeys) { this.mTrailerKeys = trailerKeys;}
+    public List<String> getTrailerKeys() { return mTrailerKeys;}
 
     /** Reformats TMDB release date from yyyy-MM-dd to MM-dd-yyyy */
     private String formatReleaseDate(String releaseDate) throws ParseException {
