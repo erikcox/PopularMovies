@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content">
 
-    <com.google.android.youtube.player.YouTubePlayerView
-    android:id="@+id/player"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tvTrailerTitle"
+        tools:text="Trailer title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/detail_text_size"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="6dp"/>
+
+    <ImageView
+        android:id="@+id/ivTrailerThumb"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        tools:src="@drawable/poster_thumbnail_placeholder"
+        android:layout_gravity="center"
+        android:cropToPadding="false"
+        android:adjustViewBounds="true"
+        android:scaleType="fitStart"
+        android:contentDescription="@string/movie_trailer_title_description"/>
 
 </LinearLayout>

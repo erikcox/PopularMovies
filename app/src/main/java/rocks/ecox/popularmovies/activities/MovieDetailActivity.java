@@ -8,7 +8,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.GridView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.R;
-import rocks.ecox.popularmovies.adapters.TrailerArrayAdapter;
+import rocks.ecox.popularmovies.adapters.TrailerAdapter;
 import rocks.ecox.popularmovies.models.Movie;
 import rocks.ecox.popularmovies.models.Trailer;
 
@@ -52,8 +53,8 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     AsyncHttpClient client = new AsyncHttpClient();
     public List<String> youTubeTrailerKeys = new ArrayList<String>();
     public Movie movie;
-    TrailerArrayAdapter adapter;
-    GridView gvTrailers;
+    TrailerAdapter adapter;
+    RecyclerView rvTrailer;
 
 
     @Override
@@ -105,12 +106,13 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     for (Trailer t : mTrailers) {
                         youTubeTrailerKeys.add(t.getKey());
                     }
-                    gvTrailers = (GridView) findViewById(R.id.gvTrailers);
+
                     movie.setTrailerKeys(youTubeTrailerKeys);
-                    adapter = new TrailerArrayAdapter(MovieDetailActivity.this, youTubeTrailerKeys);
-                    gvTrailers.setAdapter(adapter);
-                    adapter.addAll(youTubeTrailerKeys);
-                    adapter.notifyDataSetChanged();
+
+                    rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
+                    adapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
+                    rvTrailer.setAdapter(adapter);
+                    rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
