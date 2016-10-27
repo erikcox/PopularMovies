@@ -103,7 +103,7 @@
             android:paddingEnd="@dimen/padding_detail"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detail_text_size"
-            android:text="Videos"
+            android:text="@string/video_header"
             android:contentDescription="@string/movie_synopsis"/>
 
         <!--<com.google.android.youtube.player.YouTubePlayerView-->

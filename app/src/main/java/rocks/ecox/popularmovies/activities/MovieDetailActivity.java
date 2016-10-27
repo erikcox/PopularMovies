@@ -55,6 +55,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     public Movie movie;
     TrailerAdapter adapter;
     RecyclerView rvTrailer;
+    public  ArrayList<Trailer> mTrailers = new ArrayList<Trailer>();
 
 
     @Override
@@ -87,6 +88,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
             rating.setText(movie.getUserRating().toString());
             synopsis.setText(movie.getSynopsis());
         }
+
     }
 
     public void fetchMoviesAsync(String movieId, final Activity activity) throws MalformedURLException {
@@ -100,7 +102,6 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                 JSONArray trailersJsonResults = null;
 
                 try {
-                    ArrayList<Trailer> mTrailers = new ArrayList<Trailer>();
                     trailersJsonResults = response.getJSONArray("results");
                     mTrailers.addAll(Trailer.fromJSONArray(trailersJsonResults));
                     for (Trailer t : mTrailers) {
@@ -109,10 +110,12 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
 
                     movie.setTrailerKeys(youTubeTrailerKeys);
 
-                    rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
+                    // Set up trailers in RecyclerView
                     adapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
+                    rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
                     rvTrailer.setAdapter(adapter);
                     rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
