@@ -23,4 +23,5 @@
     <string name="movie_synopsis">Movie Synopsis</string>
     <string name="movie_trailer_title_description">Movie trailer</string>
     <string name="video_header">Videos</string>
+    <string name="author_label">Author:</string>
 </resources>

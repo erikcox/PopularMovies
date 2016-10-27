@@ -106,13 +106,13 @@
             android:text="@string/video_header"
             android:contentDescription="@string/movie_synopsis"/>
 
-        <!--<com.google.android.youtube.player.YouTubePlayerView-->
-            <!--android:id="@+id/player"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
-
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/rvTrailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rvReview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

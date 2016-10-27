@@ -76,23 +76,6 @@ public class MovieActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
-            /** See if we have a network connection */
-            if(Utility.isOnline(getActivity())) {
-                try {
-                    fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            mMovieAdapter.clear();
-            ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");
-            mMovieAdapter.addAll(savedMovies);
-        }
-
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -118,6 +101,24 @@ public class MovieActivityFragment extends Fragment {
         mMovieList = new ArrayList<>();
         mMovieAdapter = new MoviePosterAdapter(getActivity(), mMovieList);
         gridView.setAdapter(mMovieAdapter);
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            /** See if we have a network connection */
+            if(Utility.isOnline(getActivity())) {
+                try {
+                    fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            mMovieAdapter.clear();
+            ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");
+            mMovieAdapter.addAll(savedMovies);
+        }
+
         try {
             fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
         } catch (MalformedURLException e) {

@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
- * Creates a movie object
+ * Creates a trailer object
  */
 
 public class Trailer implements Parcelable {

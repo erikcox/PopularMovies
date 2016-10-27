@@ -24,15 +24,16 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.R;
+import rocks.ecox.popularmovies.adapters.ReviewAdapter;
 import rocks.ecox.popularmovies.adapters.TrailerAdapter;
 import rocks.ecox.popularmovies.models.Movie;
+import rocks.ecox.popularmovies.models.Review;
 import rocks.ecox.popularmovies.models.Trailer;
 
 import static rocks.ecox.popularmovies.utilities.Constants.APPEND_API_KEY;
@@ -51,12 +52,14 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvRating) TextView rating;
     @BindView(R.id.tvSynopsis) TextView synopsis;
     AsyncHttpClient client = new AsyncHttpClient();
-    public List<String> youTubeTrailerKeys = new ArrayList<String>();
+    public ArrayList<String> youTubeTrailerKeys = new ArrayList<>();
     public Movie movie;
-    TrailerAdapter adapter;
+    TrailerAdapter tAdapter;
+    ReviewAdapter rAdapter;
     RecyclerView rvTrailer;
-    public  ArrayList<Trailer> mTrailers = new ArrayList<Trailer>();
-
+    RecyclerView rvReview;
+    public  ArrayList<Trailer> mTrailers = new ArrayList<>();
+    public  ArrayList<Review> mReviews= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +114,9 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     movie.setTrailerKeys(youTubeTrailerKeys);
 
                     // Set up trailers in RecyclerView
-                    adapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
+                    tAdapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
                     rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
-                    rvTrailer.setAdapter(adapter);
+                    rvTrailer.setAdapter(tAdapter);
                     rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
 
                 } catch (JSONException e) {
@@ -126,5 +129,33 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
+
+        client.get(urlReview, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONArray reviewsJsonResults = null;
+
+                try {
+                    reviewsJsonResults = response.getJSONArray("results");
+                    mReviews.addAll(Review.fromJSONArray(reviewsJsonResults));
+
+                    // Set up reviews in RecyclerView
+                    rAdapter = new ReviewAdapter(MovieDetailActivity.this, mReviews);
+                    rvReview= (RecyclerView) findViewById(R.id.rvReview);
+                    rvReview.setAdapter(rAdapter);
+                    rvReview.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+
     }
 }

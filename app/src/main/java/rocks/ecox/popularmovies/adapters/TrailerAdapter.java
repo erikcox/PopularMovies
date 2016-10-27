@@ -38,10 +38,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             this.mPlayer = (YouTubeThumbnailView) itemView.findViewById(R.id.ytThumbnail);
             this.context = context;
             itemView.setOnClickListener(this);
-//            playButton=(ImageView)itemView.findViewById(R.id.btnYoutube_player);
-//            playButton.setOnClickListener(this);
-//            relativeLayoutOverYouTubeThumbnailView = (RelativeLayout) itemView.findViewById(R.id.relativeLayout_over_youtube_thumbnail);
-//            youTubeThumbnailView = (YouTubeThumbnailView) itemView.findViewById(R.id.youtube_thumbnail);
         }
 
         @Override
