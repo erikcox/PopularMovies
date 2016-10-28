@@ -109,7 +109,21 @@
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/rvTrailer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tvReviewHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_detail"
+            android:paddingTop="@dimen/padding_detail"
+            android:paddingLeft="@dimen/padding_detail"
+            android:paddingStart="@dimen/padding_detail"
+            android:paddingEnd="@dimen/padding_detail"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detail_text_size"
+            android:text="@string/review_header"
+            android:contentDescription="@string/movie_synopsis"/>
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/rvReview"

@@ -37,7 +37,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         this.reviewsList = reviews;
     }
 
-    // Easy access to the context object in the recyclerview
+    // Easy access to the context object in the RecyclerView
     private Context getContext() {
         return mContext;
     }

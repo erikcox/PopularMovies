@@ -3,38 +3,52 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="match_parent">
+
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="80dp"
+        android:paddingLeft="@dimen/padding_detail"
+        android:paddingStart="@dimen/padding_detail"
+        android:paddingEnd="@dimen/padding_detail"
         android:layout_height="wrap_content"
         android:text="@string/author_label"
-        android:textColor="@android:color/darker_gray"
         android:ems="10"
         android:id="@+id/tvAuthorTitle"
+        android:textColor="@android:color/darker_gray"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/tvAuthorName"
-        android:textColor="@android:color/darker_gray"
-        android:layout_toRightOf="@id/tvAuthorTitle"
-        tools:text="AuthorName"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/movie_synopsis"
-        android:textColor="@android:color/darker_gray"
+        tools:text="AuthorName"
         android:ems="10"
-        android:id="@+id/tvReviewContent"
-        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/tvAuthorTitle"
+        android:layout_toEndOf="@+id/tvAuthorTitle"
+        android:id="@+id/tvAuthorName"
+        android:textColor="@android:color/darker_gray"
+        android:layout_toRightOf="@+id/tvAuthorTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_detail"
+        android:paddingTop="@dimen/padding_detail"
+        android:paddingStart="@dimen/padding_detail"
+        android:paddingEnd="@dimen/padding_detail"
+        android:ems="10"
+        android:layout_below="@+id/tvAuthorTitle"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:id="@+id/tvReviewContent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        tools:text="@string/placeholder_synopsis"
+        android:textColor="@android:color/darker_gray"
+        android:clickable="false"
+        android:gravity="top"/>
 
 </RelativeLayout>

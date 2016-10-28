@@ -57,6 +57,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         super();
         mContext = context;
         this.trailersList = trailers;
+        setHasStableIds(true);
     }
 
     // Easy access to the context object in the recyclerview

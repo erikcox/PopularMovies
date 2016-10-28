@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +39,7 @@ import rocks.ecox.popularmovies.models.Review;
 import rocks.ecox.popularmovies.models.Trailer;
 
 import static rocks.ecox.popularmovies.utilities.Constants.APPEND_API_KEY;
+import static rocks.ecox.popularmovies.utilities.Constants.REVIEW_BASE_URL;
 import static rocks.ecox.popularmovies.utilities.Constants.TRAILER_BASE_URL;
 
 /**
@@ -51,13 +54,15 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvReleaseDate) TextView releaseDate;
     @BindView(R.id.tvRating) TextView rating;
     @BindView(R.id.tvSynopsis) TextView synopsis;
-    AsyncHttpClient client = new AsyncHttpClient();
-    public ArrayList<String> youTubeTrailerKeys = new ArrayList<>();
-    public Movie movie;
+    @BindView(R.id.tvTrailerHeader) TextView trailerHeader;
+    @BindView(R.id.tvReviewHeader) TextView reviewHeader;
     TrailerAdapter tAdapter;
     ReviewAdapter rAdapter;
     RecyclerView rvTrailer;
     RecyclerView rvReview;
+    AsyncHttpClient client = new AsyncHttpClient();
+    public ArrayList<String> youTubeTrailerKeys = new ArrayList<>();
+    public Movie movie;
     public  ArrayList<Trailer> mTrailers = new ArrayList<>();
     public  ArrayList<Review> mReviews= new ArrayList<>();
 
@@ -96,7 +101,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
 
     public void fetchMoviesAsync(String movieId, final Activity activity) throws MalformedURLException {
         String url = String.format(TRAILER_BASE_URL, movieId) + APPEND_API_KEY;
-        String urlReview = String.format(TRAILER_BASE_URL, movieId) + "reviews" + APPEND_API_KEY;
+        String urlReview = String.format(REVIEW_BASE_URL, movieId) + APPEND_API_KEY;
 
         client.get(url, new JsonHttpResponseHandler() {
             @Override
@@ -114,11 +119,16 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     movie.setTrailerKeys(youTubeTrailerKeys);
 
                     // Set up trailers in RecyclerView
-                    tAdapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
-                    rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
-                    rvTrailer.setAdapter(tAdapter);
-                    rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
-
+                    if (mTrailers.size() > 0) {
+                        Log.d("DEBUG", "Setup Trailers. Size: " + mTrailers.size());
+                        tAdapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
+                        rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
+                        rvTrailer.setAdapter(tAdapter);
+                        rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+                    } else {
+                        // Hide Trailer header if there are no trailers
+                        trailerHeader.setVisibility(View.GONE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -135,16 +145,22 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 JSONArray reviewsJsonResults = null;
-
+                Log.d("DEBUG", "GETTING REVIEWS!");
                 try {
                     reviewsJsonResults = response.getJSONArray("results");
                     mReviews.addAll(Review.fromJSONArray(reviewsJsonResults));
 
                     // Set up reviews in RecyclerView
-                    rAdapter = new ReviewAdapter(MovieDetailActivity.this, mReviews);
-                    rvReview= (RecyclerView) findViewById(R.id.rvReview);
-                    rvReview.setAdapter(rAdapter);
-                    rvReview.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+                    if (mReviews.size() > 0) {
+                        Log.d("DEBUG", "Setup Reviews. Size: " + mReviews.size());
+                        rAdapter = new ReviewAdapter(MovieDetailActivity.this, mReviews);
+                        rvReview= (RecyclerView) findViewById(R.id.rvReview);
+                        rvReview.setAdapter(rAdapter);
+                        rvReview.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+                    } else {
+                        // Hide Review header if there are no reviews
+                        reviewHeader.setVisibility(View.GONE);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
