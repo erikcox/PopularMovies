@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,6 +57,9 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvSynopsis) TextView synopsis;
     @BindView(R.id.tvTrailerHeader) TextView trailerHeader;
     @BindView(R.id.tvReviewHeader) TextView reviewHeader;
+    @BindView(R.id.favorited) ImageButton fav;
+    @BindView(R.id.unfavorited) ImageButton unfav;
+    Boolean favStatus = false;
     TrailerAdapter tAdapter;
     ReviewAdapter rAdapter;
     RecyclerView rvTrailer;
@@ -79,8 +83,10 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
         /** Populate the ImageView and TextViews from the parcelable */
         if (intent != null && intent.hasExtra("movie")) {
             movie = intent.getExtras().getParcelable("movie");
+            movie.save();
+
             try {
-                fetchMoviesAsync(movie.getId(), this);
+                fetchMoviesAsync(movie.getmId(), this);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -99,7 +105,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
 
     }
 
-    public void fetchMoviesAsync(String movieId, final Activity activity) throws MalformedURLException {
+    public void fetchMoviesAsync(final String movieId, final Activity activity) throws MalformedURLException {
         String url = String.format(TRAILER_BASE_URL, movieId) + APPEND_API_KEY;
         String urlReview = String.format(REVIEW_BASE_URL, movieId) + APPEND_API_KEY;
 
@@ -114,9 +120,9 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     mTrailers.addAll(Trailer.fromJSONArray(trailersJsonResults));
                     for (Trailer t : mTrailers) {
                         youTubeTrailerKeys.add(t.getKey());
+                        t.setmId(movieId);
+                        t.save();
                     }
-
-                    movie.setTrailerKeys(youTubeTrailerKeys);
 
                     // Set up trailers in RecyclerView
                     if (mTrailers.size() > 0) {
@@ -150,9 +156,13 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     reviewsJsonResults = response.getJSONArray("results");
                     mReviews.addAll(Review.fromJSONArray(reviewsJsonResults));
 
+                    for (Review r : mReviews) {
+                        r.setmId(movieId);
+                        r.save();
+                    }
+
                     // Set up reviews in RecyclerView
                     if (mReviews.size() > 0) {
-                        Log.d("DEBUG", "Setup Reviews. Size: " + mReviews.size());
                         rAdapter = new ReviewAdapter(MovieDetailActivity.this, mReviews);
                         rvReview= (RecyclerView) findViewById(R.id.rvReview);
                         rvReview.setAdapter(rAdapter);
@@ -173,5 +183,18 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
             }
         });
 
+    }
+
+    public void onToggleStar(View view) {
+        if(favStatus) {
+            unfav.setVisibility(View.VISIBLE);
+            fav.setVisibility(View.INVISIBLE);
+            favStatus=false;
+        }
+        else {
+            fav.setVisibility(View.VISIBLE);
+            unfav.setVisibility(View.INVISIBLE);
+            favStatus=true;
+        }
     }
 }

@@ -7,6 +7,10 @@ package rocks.ecox.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,23 +19,29 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Creates a movie object
  */
 
-public class Movie implements Parcelable {
+@Table(name = "Movies")
+public class Movie extends Model implements Parcelable {
+    @Column(name = "movie_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String mId;
+    @Column(name = "title")
     private String mTitle;
+    @Column(name = "poster_path")
     private String mPosterPath;
+    @Column(name = "backdrop_path")
     private String mBackdropPath;
+    @Column(name = "release_date")
     private String mReleaseDate;
+    @Column(name = "rating")
     private Double mUserRating;
+    @Column(name = "synopsis")
     private String mSynopsis;
-    private List<String> mTrailerKeys;
 
-    public String getId() { return mId; }
+    public String getmId() { return mId; }
     public String getTitle() { return mTitle; }
     public String getPoster() {
         return String.format("https://image.tmdb.org/t/p/w342/%s", mPosterPath);
@@ -53,8 +63,6 @@ public class Movie implements Parcelable {
             return 0.0;
         }
     }
-    public void setTrailerKeys(List<String> trailerKeys) { this.mTrailerKeys = trailerKeys;}
-    public List<String> getTrailerKeys() { return mTrailerKeys;}
 
     /** Reformats TMDB release date from yyyy-MM-dd to MM-dd-yyyy */
     private String formatReleaseDate(String releaseDate) throws ParseException {
@@ -68,7 +76,13 @@ public class Movie implements Parcelable {
         }
     }
 
+    // Make sure to have a default constructor for every ActiveAndroid model
+    public Movie(){
+        super();
+    }
+
     public Movie(JSONObject jsonObject) throws JSONException, ParseException{
+        super();
         this.mId = jsonObject.getString("id");
         this.mTitle = jsonObject.getString("original_title");
         this.mPosterPath = jsonObject.getString("poster_path");

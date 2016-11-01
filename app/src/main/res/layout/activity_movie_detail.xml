@@ -29,6 +29,10 @@
             android:adjustViewBounds="true"
             android:layout_height="250dp"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
@@ -42,6 +46,29 @@
             tools:text="@string/movie_title"
             android:text="@string/movie_title"
             android:contentDescription="@string/movie_title"/>
+
+            <ImageButton android:id="@+id/favorited"
+                         android:layout_width="60dp"
+                         android:layout_height="60dp"
+                         android:src="@drawable/button_pressed"
+                         android:background="#00ffffff"
+                         android:onClick="onToggleStar"
+                         android:layout_alignParentTop="true"
+                         android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true"
+                         android:visibility="invisible"/>
+
+            <ImageButton android:id="@+id/unfavorited"
+                         android:layout_width="60dp"
+                         android:layout_height="60dp"
+                         android:src="@drawable/button_normal"
+                         android:background="#00ffffff"
+                         android:onClick="onToggleStar"
+                         android:layout_alignParentTop="true"
+                         android:layout_alignParentRight="true"
+                         android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tvReleaseDate"

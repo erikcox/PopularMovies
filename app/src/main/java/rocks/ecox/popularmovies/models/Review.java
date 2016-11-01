@@ -7,6 +7,10 @@ package rocks.ecox.popularmovies.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,18 +22,30 @@ import java.util.ArrayList;
  * Creates a review object
  */
 
-public class Review implements Parcelable {
+@Table(name = "Reviews")
+public class Review extends Model implements Parcelable {
+    @Column(name = "review_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    private String mReviewId;
+    @Column(name = "movie_id")
     private String mId;
+    @Column(name = "author")
     private String mAuthor;
+    @Column(name = "review_content")
     private String mContent;
-//    private String mUrl; // Not using url, unless WebView implemented. Just know it's there.
 
-    public String getId() { return mId; }
+    public String getmId() { return mId; }
+    public void setmId(String id) { this.mId = id; }
+    public String getmReviewId() { return mReviewId; }
     public String getAuthor() { return mAuthor; }
     public String getContent() { return mContent; }
 
+    public Review(){
+        super();
+    }
+
     public Review(JSONObject jsonObject) throws JSONException, ParseException{
-        this.mId = jsonObject.getString("id");
+        super();
+        this.mReviewId = jsonObject.getString("id");
         this.mAuthor = jsonObject.getString("author");
         this.mContent = jsonObject.getString("content");
     }
@@ -49,6 +65,7 @@ public class Review implements Parcelable {
 
     /** Creates a Trailer object  from a parcel*/
     private Review(Parcel parcel){
+        mReviewId = parcel.readString();
         mId = parcel.readString();
         mAuthor = parcel.readString();
         mContent = parcel.readString();
@@ -61,6 +78,7 @@ public class Review implements Parcelable {
 
     /** Creates a parcel from a Trailer object */
     public void writeToParcel(Parcel parcel, int i){
+        parcel.writeString(mReviewId);
         parcel.writeString(mId);
         parcel.writeString(mAuthor);
         parcel.writeString(mContent);
