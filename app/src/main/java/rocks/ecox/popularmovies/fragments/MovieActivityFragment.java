@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.R;
@@ -117,13 +118,13 @@ public class MovieActivityFragment extends Fragment {
             } else {
                 Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
             }
-//        }
-//        // Load movies from DB if sortBy = "favorite"
-//        else if (Utility.getSortKey(getActivity()).equals("favorite")) {
-//            mMovieAdapter.clear();
-//            // Get all movies from DB marked as favorite
-//            ArrayList<Movie> favoriteMovies = ;
-//            mMovieAdapter.addAll(favoriteMovies);
+        }
+        // TODO: test this on app load (check SavedInstanceState when fav saved - Load movies from DB if sortBy = "favorite"
+        else if (Utility.getSortKey(getActivity()).equals("favorite")) {
+            mMovieAdapter.clear();
+            // Get all movies from DB marked as favorite
+            List<Movie> favoriteMovies = Movie.getFavs();
+            mMovieAdapter.addAll(favoriteMovies);
         } else {
             mMovieAdapter.clear();
             ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");
@@ -154,13 +155,18 @@ public class MovieActivityFragment extends Fragment {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(Utility.isOnline(getActivity())) {
+        if(Utility.isOnline(getActivity()) && !Utility.getSortKey(getActivity()).equals("favorite")) {
             try {
                 fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if (Utility.getSortKey(getActivity()).equals("favorite")) {
+            mMovieAdapter.clear();
+            // Get all movies from DB marked as favorite
+            List<Movie> favoriteMovies = Movie.getFavs();
+            mMovieAdapter.addAll(favoriteMovies);
+        }else{
             Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
         }
         return true;

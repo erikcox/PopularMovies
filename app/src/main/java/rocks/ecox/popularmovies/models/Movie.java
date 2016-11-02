@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.util.SQLiteUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Creates a movie object
@@ -68,6 +70,15 @@ public class Movie extends Model implements Parcelable {
         } else {
             return 0.0;
         }
+    }
+
+    // Get Favorites from DB - add a time stamp to the model to be able to sort by time added
+    public static List<Movie> getFavs() {
+        List<Movie> favoriteMovies =
+                SQLiteUtils.rawQuery(Movie.class,
+                        "SELECT * from Movies where favorite = ?",
+                        new String[] { "Y" });
+        return favoriteMovies;
     }
 
     /** Reformats TMDB release date from yyyy-MM-dd to MM-dd-yyyy */

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
@@ -42,7 +41,6 @@ public class MovieActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Activity activity = this;
         String sortBy = Utility.getSortKey(activity);
-        Toast.makeText(this, "KEY: " + sortBy, Toast.LENGTH_SHORT).show();
 
         // Titles
         String ratingSortTitle = getResources().getString(R.string.title_sort_rating);
@@ -51,7 +49,7 @@ public class MovieActivity extends AppCompatActivity {
 
         // Sort keys
         String ratingSortKey = getResources().getString(R.string.action_sort_rating);
-        String popularSortKey = getResources().getString(R.string.action_sort_popular);
+        final String popularSortKey = getResources().getString(R.string.action_sort_popular);
         String favoriteSortKey = getResources().getString(R.string.action_sort_favorite);
 
         // ActionBar names
@@ -59,14 +57,11 @@ public class MovieActivity extends AppCompatActivity {
         String ratingAppName = getResources().getString(R.string.app_name);
         String favoriteAppName = getResources().getString(R.string.app_name_favorite);
 
-        if(sortBy.equals(popularSortKey)) {
-            item.setTitle(ratingSortTitle);
-            Utility.setSortKey(activity, ratingSortKey);
-        } else if(sortBy.equals(ratingSortKey)) {
-            item.setTitle(popularSortTitle);
+        if(item.toString().equals(popularSortTitle)) {
             Utility.setSortKey(activity, popularSortKey);
-        } else if(sortBy.equals(favoriteSortKey)) {
-            item.setTitle(favoriteSortTitle);
+        } else if(item.toString().equals(ratingSortTitle)) {
+            Utility.setSortKey(activity, ratingSortKey);
+        } else if(item.toString().equals(favoriteSortTitle)) {
             Utility.setSortKey(activity, favoriteSortKey);
         }
 
