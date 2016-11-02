@@ -4,8 +4,16 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".activities.MovieActivity">
 
-    <item android:id="@+id/action_sort"
+    <item android:id="@+id/action_sort_top"
           android:title="@string/title_sort_rating"
+          app:showAsAction="withText"/>
+
+    <item android:id="@+id/action_sort_popular"
+          android:title="@string/title_sort_popular"
+          app:showAsAction="withText"/>
+
+    <item android:id="@+id/action_sort_favorite"
+          android:title="@string/title_sort_favorite"
           app:showAsAction="withText"/>
 
 </menu>

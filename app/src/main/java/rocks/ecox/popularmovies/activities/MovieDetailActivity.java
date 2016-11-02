@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.loopj.android.http.AsyncHttpClient;
@@ -190,11 +191,17 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
             unfav.setVisibility(View.VISIBLE);
             fav.setVisibility(View.INVISIBLE);
             favStatus=false;
+            movie.setFavorite(null); // Set this to "N" or null?
+            movie.save();
+            Toast.makeText(this, "Unfavorited " + movie.getTitle(), Toast.LENGTH_SHORT).show();
         }
         else {
             fav.setVisibility(View.VISIBLE);
             unfav.setVisibility(View.INVISIBLE);
             favStatus=true;
+            movie.setFavorite("Y");
+            movie.save();
+            Toast.makeText(this, "Favorited " + movie.getTitle(), Toast.LENGTH_SHORT).show();
         }
     }
 }

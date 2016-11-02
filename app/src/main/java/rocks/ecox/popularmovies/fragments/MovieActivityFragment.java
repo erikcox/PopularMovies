@@ -80,16 +80,18 @@ public class MovieActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                try {
-                    fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+        if (!Utility.getSortKey(getActivity()).equals("favorite")) {
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    try {
+                        fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
 
         /** Configure the refreshing colors */
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -102,9 +104,11 @@ public class MovieActivityFragment extends Fragment {
         mMovieAdapter = new MoviePosterAdapter(getActivity(), mMovieList);
         gridView.setAdapter(mMovieAdapter);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+        // Check if there's a saved instance, network connection, and sortBy isn't "favorite"
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")
+                && !Utility.getSortKey(getActivity()).equals("favorite")) {
             /** See if we have a network connection */
-            if(Utility.isOnline(getActivity())) {
+            if (Utility.isOnline(getActivity())) {
                 try {
                     fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
                 } catch (MalformedURLException e) {
@@ -113,6 +117,13 @@ public class MovieActivityFragment extends Fragment {
             } else {
                 Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
             }
+//        }
+//        // Load movies from DB if sortBy = "favorite"
+//        else if (Utility.getSortKey(getActivity()).equals("favorite")) {
+//            mMovieAdapter.clear();
+//            // Get all movies from DB marked as favorite
+//            ArrayList<Movie> favoriteMovies = ;
+//            mMovieAdapter.addAll(favoriteMovies);
         } else {
             mMovieAdapter.clear();
             ArrayList<Movie> savedMovies = savedInstanceState.getParcelableArrayList("movies");

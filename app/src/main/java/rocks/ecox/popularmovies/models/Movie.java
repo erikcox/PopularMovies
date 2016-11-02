@@ -40,6 +40,8 @@ public class Movie extends Model implements Parcelable {
     private Double mUserRating;
     @Column(name = "synopsis")
     private String mSynopsis;
+    @Column(name = "favorite")
+    private String mFavorite;
 
     public String getmId() { return mId; }
     public String getTitle() { return mTitle; }
@@ -55,6 +57,10 @@ public class Movie extends Model implements Parcelable {
     public String getReleaseDate() { return mReleaseDate; }
     public String getSynopsis() {
         return mSynopsis;
+    }
+    public void setFavorite(String favorite) { this.mFavorite = favorite; }
+    public String getFavorite() {
+        return mFavorite;
     }
     public Double getUserRating() {
         if (this.mUserRating > 0) {
@@ -114,6 +120,7 @@ public class Movie extends Model implements Parcelable {
         mReleaseDate = parcel.readString();
         mUserRating = parcel.readDouble();
         mSynopsis = parcel.readString();
+        mFavorite = parcel.readString();
     }
     
     @Override
@@ -130,6 +137,7 @@ public class Movie extends Model implements Parcelable {
         parcel.writeString(mReleaseDate);
         parcel.writeDouble(mUserRating);
         parcel.writeString(mSynopsis);
+        parcel.writeString(mFavorite);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>(){

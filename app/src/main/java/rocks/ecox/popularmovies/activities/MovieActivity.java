@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
@@ -41,22 +42,32 @@ public class MovieActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Activity activity = this;
         String sortBy = Utility.getSortKey(activity);
+        Toast.makeText(this, "KEY: " + sortBy, Toast.LENGTH_SHORT).show();
+
+        // Titles
         String ratingSortTitle = getResources().getString(R.string.title_sort_rating);
         String popularSortTitle = getResources().getString(R.string.title_sort_popular);
+        String favoriteSortTitle = getResources().getString(R.string.title_sort_favorite);
+
+        // Sort keys
         String ratingSortKey = getResources().getString(R.string.action_sort_rating);
         String popularSortKey = getResources().getString(R.string.action_sort_popular);
+        String favoriteSortKey = getResources().getString(R.string.action_sort_favorite);
+
+        // ActionBar names
         String popularAppName = getResources().getString(R.string.app_name_rating);
         String ratingAppName = getResources().getString(R.string.app_name);
+        String favoriteAppName = getResources().getString(R.string.app_name_favorite);
 
         if(sortBy.equals(popularSortKey)) {
             item.setTitle(ratingSortTitle);
-            getSupportActionBar().setTitle(ratingAppName);
             Utility.setSortKey(activity, ratingSortKey);
-        } else {
+        } else if(sortBy.equals(ratingSortKey)) {
             item.setTitle(popularSortTitle);
-            getSupportActionBar().setTitle(popularAppName);
             Utility.setSortKey(activity, popularSortKey);
-
+        } else if(sortBy.equals(favoriteSortKey)) {
+            item.setTitle(favoriteSortTitle);
+            Utility.setSortKey(activity, favoriteSortKey);
         }
 
         return super.onOptionsItemSelected(item);
