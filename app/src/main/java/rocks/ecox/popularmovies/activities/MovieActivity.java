@@ -24,7 +24,7 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_movie);
         // Add Stetho for debugging
         Stetho.initializeWithDefaults(this);
     }

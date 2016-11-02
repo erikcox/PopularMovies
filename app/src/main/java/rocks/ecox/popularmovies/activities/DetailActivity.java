@@ -46,10 +46,10 @@ import static rocks.ecox.popularmovies.utilities.Constants.REVIEW_BASE_URL;
 import static rocks.ecox.popularmovies.utilities.Constants.TRAILER_BASE_URL;
 
 /**
- * Activity to display movie details once clicked on in MovieActivityFragment
+ * Activity to display movie details once clicked on in MovieFragment
  */
 
-public class MovieDetailActivity extends YouTubeBaseActivity {
+public class DetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvTitle) TextView title;
     @BindView(R.id.ivBackdrop) ImageView poster;
     @BindDrawable(R.drawable.poster_placeholder_backdrop)
@@ -61,7 +61,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvReviewHeader) TextView reviewHeader;
     @BindView(R.id.favorited) ImageButton fav;
     @BindView(R.id.unfavorited) ImageButton unfav;
-    @BindBool(R.bool.favoriteStatus) Boolean favStatus;
+    @BindBool(R.bool.favoriteStatus) boolean favStatus;
     TrailerAdapter tAdapter;
     ReviewAdapter rAdapter;
     RecyclerView rvTrailer;
@@ -75,7 +75,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
+        setContentView(R.layout.fragment_detail);
         ButterKnife.bind(this);
 
         Intent intent = this.getIntent();
@@ -134,10 +134,10 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
                     // Set up trailers in RecyclerView
                     if (mTrailers.size() > 0) {
                         Log.d("DEBUG", "Setup Trailers. Size: " + mTrailers.size());
-                        tAdapter = new TrailerAdapter(MovieDetailActivity.this, mTrailers);
+                        tAdapter = new TrailerAdapter(DetailActivity.this, mTrailers);
                         rvTrailer = (RecyclerView) findViewById(R.id.rvTrailer);
                         rvTrailer.setAdapter(tAdapter);
-                        rvTrailer.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+                        rvTrailer.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
                     } else {
                         // Hide Trailer header if there are no trailers
                         trailerHeader.setVisibility(View.GONE);
@@ -170,10 +170,10 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
 
                     // Set up reviews in RecyclerView
                     if (mReviews.size() > 0) {
-                        rAdapter = new ReviewAdapter(MovieDetailActivity.this, mReviews);
+                        rAdapter = new ReviewAdapter(DetailActivity.this, mReviews);
                         rvReview= (RecyclerView) findViewById(R.id.rvReview);
                         rvReview.setAdapter(rAdapter);
-                        rvReview.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this));
+                        rvReview.setLayoutManager(new LinearLayoutManager(DetailActivity.this));
                     } else {
                         // Hide Review header if there are no reviews
                         reviewHeader.setVisibility(View.GONE);

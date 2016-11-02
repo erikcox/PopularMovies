@@ -30,7 +30,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.R;
-import rocks.ecox.popularmovies.activities.MovieDetailActivity;
+import rocks.ecox.popularmovies.activities.DetailActivity;
 import rocks.ecox.popularmovies.adapters.MoviePosterAdapter;
 import rocks.ecox.popularmovies.models.Movie;
 import rocks.ecox.popularmovies.utilities.Constants;
@@ -39,7 +39,7 @@ import rocks.ecox.popularmovies.utilities.Utility;
 /**
  * Fragment in MovieActivity that contains the movie posters
  */
-public class MovieActivityFragment extends Fragment {
+public class MovieFragment extends Fragment {
 
     private SwipeRefreshLayout swipeContainer;
     ArrayList<Movie> mMovieList;
@@ -56,7 +56,7 @@ public class MovieActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public MovieActivityFragment() {
+    public MovieFragment() {
     }
 
     /** Save the movies in the view on exit or changing views */
@@ -78,7 +78,7 @@ public class MovieActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
 
         swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
         if (!Utility.getSortKey(getActivity()).equals("favorite")) {
@@ -145,7 +145,7 @@ public class MovieActivityFragment extends Fragment {
                 Movie movie = mMovieAdapter.getItem(position);
 
                 /** Create Parcelable of movie object and pass with Intent to the DetailActivity */
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("movie", movie);
                 startActivity(intent);
             }

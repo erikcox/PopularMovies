@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <!--Inform program of parent view to allow for back button on title bar-->
-        <activity android:name=".activities.MovieDetailActivity"
+        <activity android:name=".activities.DetailActivity"
             android:parentActivityName=".activities.MovieActivity">
         </activity>
     </application>
