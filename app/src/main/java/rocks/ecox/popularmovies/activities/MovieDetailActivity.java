@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import butterknife.BindBool;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +61,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvReviewHeader) TextView reviewHeader;
     @BindView(R.id.favorited) ImageButton fav;
     @BindView(R.id.unfavorited) ImageButton unfav;
-    Boolean favStatus = false;
+    @BindBool(R.bool.favoriteStatus) Boolean favStatus;
     TrailerAdapter tAdapter;
     ReviewAdapter rAdapter;
     RecyclerView rvTrailer;
@@ -102,6 +103,11 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
             releaseDate.setText(movie.getReleaseDate());
             rating.setText(movie.getUserRating().toString());
             synopsis.setText(movie.getSynopsis());
+        }
+        if (movie.getFavorite() != null) {
+            favStatus = true;
+            fav.setVisibility(View.VISIBLE);
+            unfav.setVisibility(View.INVISIBLE);
         }
 
     }
