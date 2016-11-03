@@ -145,6 +145,7 @@ public class MovieFragment extends Fragment {
                 Movie movie = mMovieAdapter.getItem(position);
 
                 /** Create Parcelable of movie object and pass with Intent to the DetailActivity */
+
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("movie", movie);
                 startActivity(intent);

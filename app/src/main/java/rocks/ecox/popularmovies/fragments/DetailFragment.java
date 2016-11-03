@@ -1,101 +1,253 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies.fragments;
 
-import android.content.Context;
-import android.net.Uri;
+import android.app.Activity;
+import android.app.Fragment;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+
+import butterknife.BindBool;
+import butterknife.BindDrawable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cz.msebera.android.httpclient.Header;
 import rocks.ecox.popularmovies.R;
+import rocks.ecox.popularmovies.adapters.ReviewAdapter;
+import rocks.ecox.popularmovies.adapters.TrailerAdapter;
+import rocks.ecox.popularmovies.models.Movie;
+import rocks.ecox.popularmovies.models.Review;
+import rocks.ecox.popularmovies.models.Trailer;
+
+import static rocks.ecox.popularmovies.utilities.Constants.APPEND_API_KEY;
+import static rocks.ecox.popularmovies.utilities.Constants.REVIEW_BASE_URL;
+import static rocks.ecox.popularmovies.utilities.Constants.TRAILER_BASE_URL;
+
+/**
+ * Activity to display movie details once clicked on in MovieFragment
+ */
 
 public class DetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.tvTitle) TextView title;
+    @BindView(R.id.ivBackdrop) ImageView poster;
+    @BindDrawable(R.drawable.poster_placeholder_backdrop)
+    Drawable placeholder;
+    @BindView(R.id.tvReleaseDate) TextView releaseDate;
+    @BindView(R.id.tvRating) TextView rating;
+    @BindView(R.id.tvSynopsis) TextView synopsis;
+    @BindView(R.id.tvTrailerHeader) TextView trailerHeader;
+    @BindView(R.id.tvReviewHeader) TextView reviewHeader;
+    @BindView(R.id.favorited) ImageButton fav;
+    @BindView(R.id.unfavorited) ImageButton unfav;
+    @BindBool(R.bool.favoriteStatus) boolean favStatus;
+    TrailerAdapter tAdapter;
+    ReviewAdapter rAdapter;
+    RecyclerView rvTrailer;
+    RecyclerView rvReview;
+    AsyncHttpClient client = new AsyncHttpClient();
+    public ArrayList<String> youTubeTrailerKeys = new ArrayList<>();
+    public Movie movie;
+    public  ArrayList<Trailer> mTrailers = new ArrayList<>();
+    public  ArrayList<Review> mReviews= new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public DetailFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(String param1, String param2) {
-        DetailFragment fragment = new DetailFragment();
+    // DetailFragment.newInstance(movie)
+    public static DetailFragment newInstance(Movie movie) {
+        DetailFragment fragmentDetail = new DetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        args.getParcelable("movie");
+        fragmentDetail.setArguments(args);
+        return fragmentDetail;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_detail,
+                container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        ButterKnife.bind(this, view);
+
+        //        Intent intent = this.getIntent();
+        /** Change the ActionBar title */
+//        getActionBar().setTitle(R.string.title_movie_details);
+
+        /** Populate the ImageView and TextViews from the bundle */
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            movie = bundle.getParcelable("movie");
+            movie.save();
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+        try {
+            fetchMoviesAsync(movie.getmId(), getActivity(), view);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+
+        Picasso.with(getActivity())
+                .load(movie.getBackdrop())
+                .error(placeholder)
+                .placeholder(placeholder)
+                .into(poster);
+
+        title.setText(movie.getTitle());
+        releaseDate.setText(movie.getReleaseDate());
+        rating.setText(movie.getUserRating().toString());
+        synopsis.setText(movie.getSynopsis());
+
+        fav.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                onToggleStar(v);
+            }
+        });
+
+        unfav.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View v) {
+                onToggleStar(v);
+            }
+        });
+
+        if (movie.getFavorite() != null) {
+            favStatus = true;
+            fav.setVisibility(View.VISIBLE);
+            unfav.setVisibility(View.INVISIBLE);
+        }
+
+        return view;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void fetchMoviesAsync(final String movieId, final Activity activity, final View view) throws MalformedURLException {
+        String url = String.format(TRAILER_BASE_URL, movieId) + APPEND_API_KEY;
+        String urlReview = String.format(REVIEW_BASE_URL, movieId) + APPEND_API_KEY;
+
+        client.get(url, new JsonHttpResponseHandler() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONArray trailersJsonResults = null;
+
+                try {
+                    trailersJsonResults = response.getJSONArray("results");
+                    mTrailers.addAll(Trailer.fromJSONArray(trailersJsonResults));
+                    for (Trailer t : mTrailers) {
+                        youTubeTrailerKeys.add(t.getKey());
+                        t.setmId(movieId);
+                        t.save();
+                    }
+
+                    // Set up trailers in RecyclerView
+                    if (mTrailers.size() > 0) {
+                        tAdapter = new TrailerAdapter(getActivity(), mTrailers);
+                        rvTrailer = (RecyclerView) view.findViewById(R.id.rvTrailer);
+                        rvTrailer.setAdapter(tAdapter);
+                        rvTrailer.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    } else {
+                        // Hide Trailer header if there are no trailers
+                        trailerHeader.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+
+        client.get(urlReview, new JsonHttpResponseHandler() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONArray reviewsJsonResults = null;
+                Log.d("DEBUG", "GETTING REVIEWS!");
+                try {
+                    reviewsJsonResults = response.getJSONArray("results");
+                    mReviews.addAll(Review.fromJSONArray(reviewsJsonResults));
+
+                    for (Review r : mReviews) {
+                        r.setmId(movieId);
+                        r.save();
+                    }
+
+                    // Set up reviews in RecyclerView
+                    if (mReviews.size() > 0) {
+                        rAdapter = new ReviewAdapter(getActivity(), mReviews);
+                        rvReview= (RecyclerView) view.findViewById(R.id.rvReview);
+                        rvReview.setAdapter(rAdapter);
+                        rvReview.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    } else {
+                        // Hide Review header if there are no reviews
+                        reviewHeader.setVisibility(View.GONE);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void onToggleStar(View view) {
+        if(favStatus) {
+            unfav.setVisibility(View.VISIBLE);
+            fav.setVisibility(View.INVISIBLE);
+            favStatus=false;
+            movie.setFavorite(null); // Set this to "N" or null?
+            movie.save();
+            Toast.makeText(getActivity(), getString(R.string.unfavorite) + movie.getTitle(), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            fav.setVisibility(View.VISIBLE);
+            unfav.setVisibility(View.INVISIBLE);
+            favStatus=true;
+            movie.setFavorite("Y");
+            movie.save();
+            Toast.makeText(getActivity(), getString(R.string.favorite) + movie.getTitle(), Toast.LENGTH_SHORT).show();
+        }
     }
 }
