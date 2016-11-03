@@ -72,7 +72,6 @@ public class MovieFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,25 +79,31 @@ public class MovieFragment extends Fragment {
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
 
-        swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+        // Swipe to refresh if not Favorites page
         if (!Utility.getSortKey(getActivity()).equals("favorite")) {
+            swipeContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeContainer);
+            /** Configure the refreshing colors */
+            swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                    android.R.color.holo_green_light,
+                    android.R.color.holo_orange_light,
+                    android.R.color.holo_red_light);
+
             swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    try {
-                        fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    if (swipeContainer.isRefreshing() && Utility.getSortKey(getActivity()).equals("favorite")) {
+                        swipeContainer.setRefreshing(false);
+                    } else {
+                        try {
+                            fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
-        }
 
-        /** Configure the refreshing colors */
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        }
 
         gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
         mMovieList = new ArrayList<>();
@@ -131,10 +136,12 @@ public class MovieFragment extends Fragment {
             mMovieAdapter.addAll(savedMovies);
         }
 
-        try {
-            fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        if (!Utility.getSortKey(getActivity()).equals("favorite")) {
+            try {
+                fetchMoviesAsync(PAGE, Utility.getSortKey(getActivity()));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         /** Sets listener so that we can call the DetailActivity */
