@@ -79,7 +79,7 @@ public class DetailFragment extends Fragment {
     public static DetailFragment newInstance(Movie movie) {
         DetailFragment fragmentDetail = new DetailFragment();
         Bundle args = new Bundle();
-        args.getParcelable("movie");
+        args.putParcelable("movie", movie);
         fragmentDetail.setArguments(args);
         return fragmentDetail;
     }
@@ -104,7 +104,8 @@ public class DetailFragment extends Fragment {
         /** Populate the ImageView and TextViews from the bundle */
         Bundle bundle = getArguments();
         if (bundle != null) {
-            movie = bundle.getParcelable("movie");
+            movie = getArguments().getParcelable("movie");
+            movie.getTitle();
             movie.save();
         }
 

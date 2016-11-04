@@ -5,7 +5,9 @@
 package rocks.ecox.popularmovies.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,6 +49,7 @@ public class MovieFragment extends Fragment {
     GridView gridView;
     AsyncHttpClient client = new AsyncHttpClient();
     final int PAGE = 0;
+    private boolean isTwoPane = false;
 
     /**
      * Check to see if we have saved data
@@ -78,6 +81,7 @@ public class MovieFragment extends Fragment {
 
         setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
+        determinePaneLayout(rootView);
 
         // Swipe to refresh if not Favorites page
         if (!Utility.getSortKey(getActivity()).equals("favorite")) {
@@ -151,11 +155,17 @@ public class MovieFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movie = mMovieAdapter.getItem(position);
 
-                /** Create Parcelable of movie object and pass with Intent to the DetailActivity */
-
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("movie", movie);
-                startActivity(intent);
+                if (isTwoPane) {
+                    DetailFragment fragmentMovie = DetailFragment.newInstance(movie);
+                    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.flDetailContainer, fragmentMovie);
+                    ft.commit();
+                } else {
+                    /** Create Parcelable of movie object and pass with Intent to the DetailActivity */
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    intent.putExtra("movie", movie);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -210,5 +220,29 @@ public class MovieFragment extends Fragment {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
+    }
+
+    private void determinePaneLayout(View view) {
+        if (getSizeName(getActivity()).equals("tablet")) {
+            isTwoPane = true;
+        }
+    }
+
+    private static String getSizeName(Context context) {
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        switch (screenLayout) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return "phone";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return "phone";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return "tablet";
+            case 4:
+                return "tablet";
+            default:
+                return "undefined";
+        }
     }
 }

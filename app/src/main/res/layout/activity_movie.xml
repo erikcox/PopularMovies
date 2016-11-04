@@ -1,8 +1,9 @@
 <!--Copyright (C) 2016 Erik Cox-->
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:id="@+id/fragment"
-          android:name="rocks.ecox.popularmovies.fragments.MovieFragment"
+          android:id="@+id/fragmentMovie"
+          android:tag="phone"
+          class="rocks.ecox.popularmovies.fragments.MovieFragment"
           tools:layout="@layout/fragment_movie"
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>

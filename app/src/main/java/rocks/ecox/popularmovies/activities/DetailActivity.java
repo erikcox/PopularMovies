@@ -20,12 +20,13 @@ import rocks.ecox.popularmovies.models.Movie;
 
 public class DetailActivity extends AppCompatActivity {
     public Movie movie;
+    Fragment fragmentDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        // Fetch the item to display from bundle
+        // Fetch the item to display from bundle & launch Intent if not Tablet view
         Intent intent = this.getIntent();
 
         if (savedInstanceState == null) {
@@ -36,8 +37,8 @@ public class DetailActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelable("movie", movie);
 
-            Fragment fragmentDetail = new DetailFragment();
-            fragmentDetail.setArguments(bundle);
+            fragmentDetail = DetailFragment.newInstance(movie);
+//            fragmentDetail.setArguments(bundle);
             android.app.FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                 .replace(R.id.flDetailContainer, fragmentDetail)
