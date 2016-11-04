@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2016 Erik Cox
+  -->
+
 <resources>
     <bool name="favoriteStatus">false</bool>
 </resources>

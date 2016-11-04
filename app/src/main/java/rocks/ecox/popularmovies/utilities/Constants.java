@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2016 Erik Cox
+ */
+
 package rocks.ecox.popularmovies.utilities;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;

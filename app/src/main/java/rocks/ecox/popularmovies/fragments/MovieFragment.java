@@ -127,9 +127,7 @@ public class MovieFragment extends Fragment {
             } else {
                 Toast.makeText(getActivity(), Constants.NETWORK_FAIL, Toast.LENGTH_SHORT).show();
             }
-        }
-        // TODO: test this on app load (check SavedInstanceState when fav saved - Load movies from DB if sortBy = "favorite"
-        else if (Utility.getSortKey(getActivity()).equals("favorite")) {
+        } else if (Utility.getSortKey(getActivity()).equals("favorite")) {
             mMovieAdapter.clear();
             // Get all movies from DB marked as favorite
             List<Movie> favoriteMovies = Movie.getFavs();

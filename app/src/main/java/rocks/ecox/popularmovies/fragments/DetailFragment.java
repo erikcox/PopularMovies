@@ -97,7 +97,6 @@ public class DetailFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        //        Intent intent = this.getIntent();
         /** Change the ActionBar title */
 //        getActionBar().setTitle(R.string.title_movie_details);
 
