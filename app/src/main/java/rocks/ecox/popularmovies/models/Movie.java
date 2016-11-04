@@ -26,6 +26,7 @@ import java.util.List;
  * Creates a Movie object
  */
 
+/** Save the movie contents in a SQLite DB using ActiveAndroid ORM */
 @Table(name = "Movies")
 public class Movie extends Model implements Parcelable {
     @Column(name = "movie_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
@@ -62,6 +63,7 @@ public class Movie extends Model implements Parcelable {
     public String getSynopsis() {
         return mSynopsis;
     }
+    /**  Store a flag if a movie is favorited by the user */
     public void setFavorite(String favorite) { this.mFavorite = favorite; }
     public String getFavorite() {
         return mFavorite;

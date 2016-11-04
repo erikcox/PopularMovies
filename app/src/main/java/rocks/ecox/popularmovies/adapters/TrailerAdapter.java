@@ -82,6 +82,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(TrailerAdapter.ViewHolder holder, final int position) {
+        // TODO: (Stage 3) Implement sharing of YouTube video from the movie details screen
         /** Get the video based on the position */
         final Trailer trailerAttributes = trailersList.get(position);
         String trailerThumb = (String) "http://img.youtube.com/vi/" + trailerAttributes.getKey() + "/0.jpg";
