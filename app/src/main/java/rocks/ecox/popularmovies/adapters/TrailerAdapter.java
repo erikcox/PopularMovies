@@ -51,6 +51,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             if (position != RecyclerView.NO_POSITION) {
                 if (trailersList.get(position).getKey() != null){
                     Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity) context, YOUTUBE_API_KEY, trailersList.get(position).getKey());
+                    /** Got the following error on the below line in tablet view:
+                     *  android.content.ActivityNotFoundException: No Activity found to handle Intent { act=com.google.android.youtube.api.StandalonePlayerActivity.START (has extras) }
+                     */
                     context.startActivity(intent);
                 }
             }

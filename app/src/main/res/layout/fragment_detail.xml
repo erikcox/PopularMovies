@@ -20,6 +20,7 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
+        <!-- TODO: modify the size of the backdrop in DetailFragment for Tablet view -->
         <ImageView
             android:id="@+id/ivBackdrop"
             tools:src="@drawable/poster_placeholder_backdrop"
@@ -49,6 +50,7 @@
                 android:text="@string/movie_title"
                 android:contentDescription="@string/movie_title"/>
 
+            <!-- TODO: Re-size / re-position favorite star, esp. on Tablet view -->
             <ImageButton android:id="@+id/favorited"
                          android:layout_width="60dp"
                          android:layout_height="60dp"

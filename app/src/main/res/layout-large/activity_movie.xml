@@ -10,7 +10,8 @@
               android:baselineAligned="false"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@android:color/black">
 
     <fragment
         android:id="@+id/fragmentMovie"
@@ -18,7 +19,7 @@
         class="rocks.ecox.popularmovies.fragments.MovieFragment"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         tools:layout="@layout/fragment_movie" />
 
     <View android:background="#000000"
