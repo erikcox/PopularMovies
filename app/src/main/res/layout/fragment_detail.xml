@@ -50,7 +50,7 @@
                 android:text="@string/movie_title"
                 android:contentDescription="@string/movie_title"/>
 
-            <!-- TODO: Re-size / re-position favorite star, esp. on Tablet view -->
+            <!-- TODO: (Stage 3) Re-size / re-position favorite star -->
             <ImageButton android:id="@+id/favorited"
                          android:layout_width="60dp"
                          android:layout_height="60dp"

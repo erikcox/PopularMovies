@@ -19,7 +19,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
- * Creates a trailer object
+ * Creates a Trailer object
  */
 
 @Table(name = "Trailers")
@@ -51,7 +51,7 @@ public class Trailer extends Model implements Parcelable {
 
     public Trailer(JSONObject jsonObject) throws JSONException, ParseException{
         super();
-        // Only add trailers from YouTube
+        /** Only add trailers from YouTube */
         if (jsonObject.getString("site").equals("YouTube")) {
             this.mVideoId = jsonObject.getString("id");
             this.mKey = jsonObject.getString("key");

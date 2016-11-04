@@ -6,6 +6,10 @@ package rocks.ecox.popularmovies.utilities;
 
 import static rocks.ecox.popularmovies.BuildConfig.TMDB_API_KEY;
 
+/**
+ * Constant values utility class
+ */
+
 public class Constants {
 
     public static final String DISCOVER_BASE_URL = "http://api.themoviedb.org/3/discover/movie";

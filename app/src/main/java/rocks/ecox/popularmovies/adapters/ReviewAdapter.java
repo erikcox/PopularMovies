@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import rocks.ecox.popularmovies.R;
 import rocks.ecox.popularmovies.models.Review;
 
+/**
+ * Custom adapter for the movie reviews (if they exist)
+ */
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     private static Context mContext;
@@ -26,6 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         private TextView review;
         private Context context;
 
+        /** Set up the View */
         public ViewHolder(View itemView) {
             super(itemView);
             this.author = (TextView) itemView.findViewById(R.id.tvAuthorName);
@@ -41,7 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         this.reviewsList = reviews;
     }
 
-    // Easy access to the context object in the RecyclerView
+    /** Easy access to the context object in the RecyclerView */
     private Context getContext() {
         return mContext;
     }
@@ -58,9 +63,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ReviewAdapter.ViewHolder holder, final int position) {
-        // Get the data model based on the position
+        /** Get the review based on the position */
         final Review reviewAttributes = reviewsList.get(position);
 
+        /** Set the author and review contents text */
         holder.author.setText(reviewAttributes.getAuthor());
         holder.review.setText(reviewAttributes.getContent());
     }

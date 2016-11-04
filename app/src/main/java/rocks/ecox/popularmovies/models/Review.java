@@ -19,7 +19,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
- * Creates a review object
+ * Creates a Review object
  */
 
 @Table(name = "Reviews")
@@ -63,7 +63,7 @@ public class Review extends Model implements Parcelable {
         return results;
     }
 
-    /** Creates a Trailer object  from a parcel*/
+    /** Creates a Trailer object  from a Parcel */
     private Review(Parcel parcel){
         mReviewId = parcel.readString();
         mId = parcel.readString();
@@ -76,7 +76,7 @@ public class Review extends Model implements Parcelable {
         return 0;
     }
 
-    /** Creates a parcel from a Trailer object */
+    /** Creates a Parcel from a Trailer object */
     public void writeToParcel(Parcel parcel, int i){
         parcel.writeString(mReviewId);
         parcel.writeString(mId);

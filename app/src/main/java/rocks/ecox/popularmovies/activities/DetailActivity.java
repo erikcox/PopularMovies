@@ -15,7 +15,7 @@ import rocks.ecox.popularmovies.models.Movie;
 
 
 /**
- * Activity to display movie details once clicked on in MovieFragment
+ * Detail Activity to display movie details once clicked on in MovieFragment
  */
 
 public class DetailActivity extends AppCompatActivity {
@@ -26,10 +26,11 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        // Fetch the item to display from bundle & launch Intent if not Tablet view
+
         Intent intent = this.getIntent();
 
         if (savedInstanceState == null) {
+            /** Fetch the movie from the Parcelable */
             if (intent != null && intent.hasExtra("movie")) {
                 movie = intent.getExtras().getParcelable("movie");
             }
@@ -37,8 +38,8 @@ public class DetailActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putParcelable("movie", movie);
 
+            /** Replace the FrameLayout placeholder in the tablet layout with the movie object */
             fragmentDetail = DetailFragment.newInstance(movie);
-//            fragmentDetail.setArguments(bundle);
             android.app.FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                 .replace(R.id.flDetailContainer, fragmentDetail)

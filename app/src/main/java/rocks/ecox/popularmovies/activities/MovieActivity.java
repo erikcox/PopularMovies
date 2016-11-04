@@ -16,7 +16,7 @@ import rocks.ecox.popularmovies.R;
 import rocks.ecox.popularmovies.utilities.Utility;
 
 /**
- * MovieActivity
+ * MovieActivity to display a grid of movie posters
  */
 
 public class MovieActivity extends AppCompatActivity {

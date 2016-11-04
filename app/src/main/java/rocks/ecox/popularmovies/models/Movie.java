@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Creates a movie object
+ * Creates a Movie object
  */
 
 @Table(name = "Movies")
@@ -72,7 +72,8 @@ public class Movie extends Model implements Parcelable {
         }
     }
 
-    // Get Favorites from DB - add a time stamp to the model to be able to sort by time added
+    // TODO: (Stage 3) Add a timestamp to the model to be able to sort favorites by time added
+    /** Get Favorites from DB */
     public static List<Movie> getFavs() {
         List<Movie> favoriteMovies =
                 SQLiteUtils.rawQuery(Movie.class,
@@ -93,7 +94,7 @@ public class Movie extends Model implements Parcelable {
         }
     }
 
-    // Make sure to have a default constructor for every ActiveAndroid model
+    /** Make sure to have a default constructor for every ActiveAndroid model */
     public Movie(){
         super();
     }
@@ -122,7 +123,7 @@ public class Movie extends Model implements Parcelable {
         return results;
     }
 
-    /** Creates a Movie object  from a parcel*/
+    /** Creates a Movie object  from Parcel */
     private Movie(Parcel parcel){
         mId = parcel.readString();
         mTitle = parcel.readString();

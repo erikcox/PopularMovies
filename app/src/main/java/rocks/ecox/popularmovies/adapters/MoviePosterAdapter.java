@@ -36,6 +36,7 @@ public class MoviePosterAdapter extends ArrayAdapter<Movie> {
         ViewHolder holder;
         Movie movie = getItem(position);
 
+        /** Set up the View */
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_poster, parent, false);
             holder = new ViewHolder(convertView);
@@ -44,7 +45,7 @@ public class MoviePosterAdapter extends ArrayAdapter<Movie> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        /** Set the movie poster in the ImageView */
+        /** Set the movie poster image in the ImageView */
         Picasso.with(getContext())
                 .load(movie.getPoster())
                 .error(holder.placeholder)

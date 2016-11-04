@@ -13,6 +13,7 @@
               android:layout_height="match_parent"
               android:background="@android:color/black">
 
+     <!-- Fragment for holding movie posters in tablet layout -->
     <fragment
         android:id="@+id/fragmentMovie"
         android:tag="tablet"
@@ -22,11 +23,13 @@
         android:layout_weight="1"
         tools:layout="@layout/fragment_movie" />
 
+    <!-- 1dp black divider bar for tablet layout -->
     <View android:background="#000000"
           android:layout_width="1dp"
           android:layout_height="wrap_content"
         />
 
+    <!-- Placeholder for the movie details -->
     <FrameLayout
         android:id="@+id/flDetailContainer"
         android:layout_width="0dp"

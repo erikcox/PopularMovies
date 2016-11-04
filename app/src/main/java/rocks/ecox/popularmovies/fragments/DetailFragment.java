@@ -75,7 +75,7 @@ public class DetailFragment extends Fragment {
     public  ArrayList<Trailer> mTrailers = new ArrayList<>();
     public  ArrayList<Review> mReviews= new ArrayList<>();
 
-    // DetailFragment.newInstance(movie)
+    /** Creates a new instance of this fragment with a movie object */
     public static DetailFragment newInstance(Movie movie) {
         DetailFragment fragmentDetail = new DetailFragment();
         Bundle args = new Bundle();
@@ -97,9 +97,6 @@ public class DetailFragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
-        /** Change the ActionBar title */
-//        getActionBar().setTitle(R.string.title_movie_details);
-
         /** Populate the ImageView and TextViews from the bundle */
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -114,17 +111,20 @@ public class DetailFragment extends Fragment {
             e.printStackTrace();
         }
 
+        /** Place a movie backdrop image in the ImageView */
         Picasso.with(getActivity())
                 .load(movie.getBackdrop())
                 .error(placeholder)
                 .placeholder(placeholder)
                 .into(poster);
 
+        /** Populate text in the detail fields */
         title.setText(movie.getTitle());
         releaseDate.setText(movie.getReleaseDate());
         rating.setText(movie.getUserRating().toString());
         synopsis.setText(movie.getSynopsis());
 
+        /** Set listeners for movies that are favorited / unfavorited */
         fav.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -141,6 +141,7 @@ public class DetailFragment extends Fragment {
             }
         });
 
+        /** Determine the visibility  of the yellow star and blank star images */
         if (movie.getFavorite() != null) {
             favStatus = true;
             fav.setVisibility(View.VISIBLE);
@@ -231,6 +232,7 @@ public class DetailFragment extends Fragment {
 
     }
 
+    /** Toggle the star image visibility, set the value in the DB, and Toast to notify the user */
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void onToggleStar(View view) {
         if(favStatus) {

@@ -24,6 +24,10 @@ import rocks.ecox.popularmovies.models.Trailer;
 
 import static rocks.ecox.popularmovies.BuildConfig.YOUTUBE_API_KEY;
 
+/**
+ * Custom adapter for YouTube videos
+ */
+
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
     private static Context mContext;
@@ -32,10 +36,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private YouTubeThumbnailView mPlayer;
         private Context context;
-//        protected RelativeLayout relativeLayoutOverYouTubeThumbnailView;
-//        YouTubeThumbnailView youTubeThumbnailView;
-//        protected ImageView playButton;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -44,16 +44,15 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             itemView.setOnClickListener(this);
         }
 
+        /** If a video is clicked, start an Intent to play it in the YouTube app */
         @Override
         public void onClick(View view) {
             Context context = getContext();
             int position = getAdapterPosition();
+
             if (position != RecyclerView.NO_POSITION) {
                 if (trailersList.get(position).getKey() != null){
                     Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity) context, YOUTUBE_API_KEY, trailersList.get(position).getKey());
-                    /** Got the following error on the below line in tablet view:
-                     *  android.content.ActivityNotFoundException: No Activity found to handle Intent { act=com.google.android.youtube.api.StandalonePlayerActivity.START (has extras) }
-                     */
                     context.startActivity(intent);
                 }
             }
@@ -67,7 +66,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         setHasStableIds(true);
     }
 
-    // Easy access to the context object in the recyclerview
+    /** Easy access to the context object in the RecyclerView */
     private Context getContext() {
         return mContext;
     }
@@ -78,13 +77,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = inflater.inflate(R.layout.item_trailer, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(TrailerAdapter.ViewHolder holder, final int position) {
-        // Get the data model based on the position
+        /** Get the video based on the position */
         final Trailer trailerAttributes = trailersList.get(position);
         String trailerThumb = (String) "http://img.youtube.com/vi/" + trailerAttributes.getKey() + "/0.jpg";
 
