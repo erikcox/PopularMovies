@@ -206,7 +206,9 @@ public class MovieFragment extends Fragment {
                     moviesJsonResults = response.getJSONArray("results");
                     mMovieAdapter.clear();
                     mMovieAdapter.addAll(Movie.fromJSONArray(moviesJsonResults));
-                    swipeContainer.setRefreshing(false);
+                    if (swipeContainer != null) {
+                        swipeContainer.setRefreshing(false);
+                    }
                     mMovieAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

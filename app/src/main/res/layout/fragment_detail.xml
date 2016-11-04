@@ -20,7 +20,6 @@
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
-        <!-- TODO: modify the size of the backdrop in DetailFragment for Tablet view -->
         <ImageView
             android:id="@+id/ivBackdrop"
             tools:src="@drawable/poster_placeholder_backdrop"

@@ -50,6 +50,8 @@ public class Movie extends Model implements Parcelable {
     public String getPoster() {
         return String.format("https://image.tmdb.org/t/p/w342/%s", mPosterPath);
     }
+
+    //  TODO: (Stage 3) Modify the size of the backdrop in DetailFragment for Tablet view
     public String getBackdrop() {
         return String.format("https://image.tmdb.org/t/p/w342/%s", mBackdropPath);
     }
