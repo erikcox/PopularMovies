@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.facebook.stetho.Stetho;
+import com.squareup.leakcanary.LeakCanary;
 
 import rocks.ecox.popularmovies.R;
 import rocks.ecox.popularmovies.utilities.Utility;
@@ -24,6 +25,7 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LeakCanary.install(getApplication());
         setContentView(R.layout.activity_movie);
         // Add Stetho for debugging
         Stetho.initializeWithDefaults(this);
